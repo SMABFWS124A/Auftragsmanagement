@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Willkommen bei der User-Verwaltung</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Spezifisches CSS für die Willkommensseite, zentriert den Inhalt */
+    .welcome-center {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 80vh; /* 80% der Viewport-Höhe */
+        text-align: center;
+    }
+
+    .welcome-card {
+        background-color: #ffffff;
+        padding: 40px 60px;
+        border-radius: 12px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .welcome-card h1 {
+        color: var(--primary-color);
+        font-size: 2.5em;
+        margin-bottom: 20px;
+        border-bottom: none;
+    }
+
+    /* Gestaltung des Buttons, nutzt die primary-color */
+    .login-button {
+        background-color: var(--success-color); /* Grün für eine Aktion */
+        color: white;
+        padding: 12px 30px;
+        font-size: 1.2em;
+        text-decoration: none; /* Wichtig, da es ein <a>-Tag ist */
+        border-radius: 6px;
+        display: inline-block;
+        transition: background-color 0.3s;
+    }
+
+    .login-button:hover {
+        background-color: #1e7e34; /* Dunkleres Grün beim Hover */
+    }
+  </style>
+</head>
+<body>
+
+<div class="container welcome-center">
+  <div class="welcome-card">
+    <h1>Willkommen! 👋</h1>
+    <p>Ihre Plattform zur einfachen Verwaltung von Benutzerdaten.</p>
+    <p style="margin-top: 30px;">
+      <a href="user-management.html" class="login-button">Zur Anwendung starten</a>
+    </p>
+  </div>
+</div>
+
+</body>
+</html>

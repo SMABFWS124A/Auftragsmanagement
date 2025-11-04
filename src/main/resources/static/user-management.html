@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>User-Verwaltung Frontend</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Kunden</h1>
+
+    <div class="main-content">
+
+        <div class="left-panel">
+            <div id="userForm">
+                <h2><span id="formTitle">Neuen Kunden anlegen</span></h2>
+                <form id="createUpdateForm">
+                    <input type="hidden" id="userId" name="id" value="">
+
+                    <p>
+                        <label for="firstName">Vorname:</label>
+                        <input type="text" id="firstName" required>
+                    </p>
+                    <p>
+                        <label for="lastName">Nachname:</label>
+                        <input type="text" id="lastName" required>
+                    </p>
+                    <p>
+                        <label for="email">E-Mail:</label>
+                        <input type="email" id="email" required>
+                    </p>
+
+                    <button type="submit" id="submitButton">Kunde speichern</button>
+                    <button type="button" id="cancelButton" style="display: none;">Abbrechen</button>
+                </form>
+                <p id="message"></p>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <h2>Alle Kund*innen</h2>
+            <table id="userTable">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Vorname</th>
+                    <th>Nachname</th>
+                    <th>E-Mail</th>
+                    <th>Aktionen</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+    </div> </div> <script src="app.js"></script>
+</body>
+</html>
