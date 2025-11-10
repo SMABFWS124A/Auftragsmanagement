@@ -2,61 +2,75 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Willkommen bei der User-Verwaltung</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Startseite – Auftrags-Hub</title>
   <style>
-    /* Spezifisches CSS für die Willkommensseite, zentriert den Inhalt */
-    .welcome-center {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 80vh; /* 80% der Viewport-Höhe */
-        text-align: center;
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #007bff, #00aaff);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
     }
 
-    .welcome-card {
-        background-color: #ffffff;
-        padding: 40px 60px;
-        border-radius: 12px;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    .login-container {
+      background: white;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      width: 350px;
+      text-align: center;
     }
 
-    .welcome-card h1 {
-        color: var(--primary-color);
-        font-size: 2.5em;
-        margin-bottom: 20px;
-        border-bottom: none;
+    h2 {
+      color: #333;
+      margin-bottom: 20px;
     }
 
-    /* Gestaltung des Buttons, nutzt die primary-color */
-    .login-button {
-        background-color: var(--success-color); /* Grün für eine Aktion */
-        color: white;
-        padding: 12px 30px;
-        font-size: 1.2em;
-        text-decoration: none; /* Wichtig, da es ein <a>-Tag ist */
-        border-radius: 6px;
-        display: inline-block;
-        transition: background-color 0.3s;
+    input[type="email"], input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
     }
 
-    .login-button:hover {
-        background-color: #1e7e34; /* Dunkleres Grün beim Hover */
+    button {
+      width: 100%;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    p {
+      font-size: 14px;
+      margin-top: 15px;
+      color: #555;
     }
   </style>
 </head>
 <body>
-
-<div class="container welcome-center">
-  <div class="welcome-card">
-    <h1>Willkommen! 👋</h1>
-    <p>Ihre Plattform zur einfachen Verwaltung von Benutzerdaten.</p>
-    <p style="margin-top: 30px;">
-      <a href="user-management.html" class="login-button">Zur Anwendung starten</a>
-    </p>
-  </div>
+<div class="login-container">
+  <h2>Login – Auftrags-Hub</h2>
+  <form action="user-management.html">
+    <input type="email" placeholder="E-Mail-Adresse" required>
+    <input type="password" placeholder="Passwort" required>
+    <button type="submit">Einloggen</button>
+  </form>
+  <p>Bitte mit Ihrer registrierten E-Mail anmelden.</p>
 </div>
-
 </body>
 </html>

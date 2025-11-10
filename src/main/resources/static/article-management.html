@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Artikelverwaltung</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="navbar">
+    <div class="nav-links">
+        <a href="index.html" class="brand">Startseite</a>
+        <a href="user-management.html">Kunden</a>
+        <a href="article-management.html" class="active">Artikel</a>
+    </div>
+</div>
+
+<div class="container">
+
+    <h1>Artikelverwaltung (CRUD)</h1>
+
+    <div class="main-content">
+
+        <div class="left-panel">
+            <div id="articleFormWrapper">
+                <h2><span id="formTitle">Neuen Artikel anlegen</span></h2>
+
+                <form id="createUpdateForm">
+                    <input type="hidden" id="articleId" name="id" value="">
+
+                    <p>
+                        <label for="articleNumber">Artikelnummer:</label>
+                        <input type="text" id="articleNumber" required>
+                    </p>
+                    <p>
+                        <label for="articleName">Name:</label>
+                        <input type="text" id="articleName" required>
+                    </p>
+                    <p>
+                        <label for="purchasePrice">Einkaufspreis (€):</label>
+                        <input type="number" id="purchasePrice" step="0.01" required>
+                    </p>
+                    <p>
+                        <label for="salesPrice">Verkaufspreis (€):</label>
+                        <input type="number" id="salesPrice" step="0.01" required>
+                    </p>
+                    <p>
+                        <label for="category">Kategorie:</label>
+                        <select id="category" required>
+                            <option value="" disabled selected>Kategorie auswählen</option>
+                        </select>
+                    </p>
+                    <p>
+                        <label for="inventory">Lagerbestand:</label>
+                        <input type="number" id="inventory" step="1" required>
+                    </p>
+                    <p>
+                        <label for="description">Beschreibung:</label>
+                        <textarea id="description" rows="3"></textarea>
+                    </p>
+                    <p>
+                        <input type="checkbox" id="active" name="active" checked>
+                        <label for="active" style="display: inline; font-weight: normal;">Artikel ist aktiv</label>
+                    </p>
+
+                    <button type="submit" id="submitButton">Artikel speichern</button>
+                    <button type="button" id="cancelButton" style="display: none;">Abbrechen</button>
+                </form>
+                <p id="message"></p>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <h2>Alle Artikel</h2>
+            <table id="articleTable">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Art.Nr.</th>
+                    <th>Name</th>
+                    <th>VK-Preis</th>
+                    <th>Bestand</th>
+                    <th>Aktionen</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="article.js"></script>
+</body>
+</html>
