@@ -3,11 +3,12 @@ package com.springboot.auftragsmanagement.service.impl;
 import com.springboot.auftragsmanagement.dto.ArticleDto;
 import com.springboot.auftragsmanagement.entity.Article;
 import com.springboot.auftragsmanagement.exception.ResourceNotFoundException;
+import com.springboot.auftragsmanagement.exception.StockExceededException;
 import com.springboot.auftragsmanagement.mapper.ArticleMapper;
 import com.springboot.auftragsmanagement.repository.ArticleRepository;
 import com.springboot.auftragsmanagement.service.ArticleService;
-
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -98,6 +99,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    @Transactional
     public ArticleDto updateInventory(Long id, int inventoryChange) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Artikel mit der ID " +id+ " wurde nicht gefunden"));
@@ -106,8 +108,14 @@ public class ArticleServiceImpl implements ArticleService {
         int newInventory = currentInventory + inventoryChange;
 
         if (newInventory < 0) {
-            throw new IllegalArgumentException("Bestandsreduzierung nicht möglich, da der Lagerbestand (" + currentInventory + ") zu gering ist.");
+            int required = -inventoryChange;
+
+            throw new StockExceededException(
+                    "Nicht genügend Bestand für Artikel " + article.getArticleNumber() + " (" + article.getArticleName() + ")." +
+                            " Benötigt: " + required + ", Verfügbar: " + currentInventory
+            );
         }
+
 
         article.setInventory(newInventory);
 

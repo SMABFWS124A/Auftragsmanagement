@@ -12,7 +12,7 @@ const categoryDropdown = document.getElementById('category');
 const STATIC_CATEGORIES = ['Elektronik', 'Kleidung', 'Lebensmittel', 'Bücher', 'Dienstleistung'];
 
 document.addEventListener('DOMContentLoaded', () => {
-    populateCategoryDropdown(); // Kategorien beim Laden füllen
+    populateCategoryDropdown();
     fetchAndDisplayArticles();
     createUpdateForm.addEventListener('submit', handleFormSubmit);
     cancelButton.addEventListener('click', resetForm);
@@ -88,7 +88,6 @@ async function fetchAndDisplayArticles() {
 async function handleFormSubmit(event) {
     event.preventDefault();
 
-    // NEU: Alte Meldung vor dem Senden löschen und Kasten zurücksetzen
     messageElement.textContent = '';
     messageElement.className = '';
 
@@ -98,17 +97,17 @@ async function handleFormSubmit(event) {
     const articleData = {
         articleNumber: document.getElementById('articleNumber').value,
         articleName: document.getElementById('articleName').value,
-        purchasePrice: document.getElementById('purchasePrice').value,
-        salesPrice: document.getElementById('salesPrice').value,
-        category: document.getElementById('category').value, // Wert aus Dropdown
-        inventory: document.getElementById('inventory').value,
+        purchasePrice: parseFloat(document.getElementById('purchasePrice').value),
+        salesPrice: parseFloat(document.getElementById('salesPrice').value),
+        category: document.getElementById('category').value,
+        inventory: parseInt(document.getElementById('inventory').value),
         description: document.getElementById('description').value,
         active: document.getElementById('active').checked,
         creationDate: null
     };
 
     if (isUpdate) {
-        articleData.id = id;
+        articleData.id = parseInt(id);
     }
 
     const url = isUpdate ? `${BASE_URL}/${id}` : BASE_URL;
@@ -124,23 +123,22 @@ async function handleFormSubmit(event) {
         });
 
         if (!response.ok) {
-            throw new Error(`Serverfehler: ${response.status} ${response.statusText}`);
+            const errorText = await response.text();
+            throw new Error(`Serverfehler: ${response.status} ${errorText || response.statusText}`);
         }
 
         const actionText = isUpdate ? 'aktualisiert' : 'angelegt';
-        showMessage(`✅ Artikel erfolgreich ${actionText}!`, 'success'); // Füge ein Icon für besseren Look hinzu
+        showMessage(`✅ Artikel erfolgreich ${actionText}!`, 'success');
 
-        // Formular zurücksetzen, ABER die Erfolgsmeldung BEHALTEN
         resetFormFields();
         fetchAndDisplayArticles();
 
     } catch (error) {
-        showMessage(`❌ Fehler beim Speichern des Artikels: ${error.message}`, 'error'); // Füge ein Icon für besseren Look hinzu
+        showMessage(`❌ Fehler beim Speichern des Artikels: ${error.message}`, 'error');
         console.error('API-Fehler:', error);
     }
 }
 
-// Funktion umbenannt, um klarzustellen, dass nur die Formularfelder zurückgesetzt werden.
 function resetFormFields() {
     createUpdateForm.reset();
     document.getElementById('active').checked = true;
@@ -149,20 +147,16 @@ function resetFormFields() {
     submitButton.textContent = 'Artikel speichern';
     cancelButton.style.display = 'none';
 
-    // Setzt das Dropdown auf den Standardwert zurück
     categoryDropdown.value = '';
 }
 
-// Die ursprüngliche resetForm Funktion wird jetzt für den Abbruch-Button verwendet
 function resetForm() {
-    resetFormFields(); // Formularfelder leeren
-    // Zusätzlich die Meldung löschen, wenn der Benutzer auf "Abbrechen" klickt
+    resetFormFields();
     messageElement.textContent = '';
     messageElement.className = '';
 }
 
 function fillFormForUpdate(article) {
-    // Wenn das Bearbeitungsformular gefüllt wird, sollte die aktuelle Meldung gelöscht werden
     messageElement.textContent = '';
     messageElement.className = '';
 
@@ -171,7 +165,7 @@ function fillFormForUpdate(article) {
     document.getElementById('articleName').value = article.articleName;
     document.getElementById('purchasePrice').value = article.purchasePrice;
     document.getElementById('salesPrice').value = article.salesPrice;
-    document.getElementById('category').value = article.category; // Setzt den ausgewählten Wert
+    document.getElementById('category').value = article.category;
     document.getElementById('inventory').value = article.inventory;
     document.getElementById('description').value = article.description;
     document.getElementById('active').checked = article.active;
@@ -187,7 +181,6 @@ async function deleteArticle(id, name) {
         return;
     }
 
-    // Alte Meldung vor dem Löschen löschen
     messageElement.textContent = '';
     messageElement.className = '';
 

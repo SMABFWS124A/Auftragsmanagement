@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Bestellwesen & Einkauf</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="navbar">
+    <div class="nav-links">
+        <a href="index.html" class="brand">Startseite</a>
+        <a href="user-management.html">Kunden</a>
+        <a href="article-management.html">Artikel</a>
+        <a href="supplier-management.html">Lieferanten</a>
+        <a href="purchase-order.html" class="active">Bestellwesen</a>
+        <a href="order-management.html">Kundenaufträge</a>
+    </div>
+</div>
+
+<div class="container">
+
+    <h1>Bestellwesen & Wareneingang</h1>
+
+    <div class="main-content">
+
+        <div class="left-panel">
+            <h2>Neue Bestellung aufgeben</h2>
+
+            <form id="createOrderForm">
+
+                <p>
+                    <label for="supplierSelect">Lieferant auswählen:</label>
+                    <select id="supplierSelect" required>
+                        <option value="" disabled selected>Bitte Lieferant wählen</option>
+                    </select>
+                </p>
+
+                <h3>Bestellpositionen</h3>
+                <div id="itemsContainer">
+                </div>
+
+                <p>
+                    <button type="button" id="addItemButton">➕ Position hinzufügen</button>
+                </p>
+
+                <p style="margin-top: 20px;">
+                    <button type="submit" id="submitOrderButton">Bestellung absenden</button>
+                </p>
+            </form>
+            <p id="message"></p>
+        </div>
+
+        <div class="right-panel">
+            <h2>Offene & aktuelle Bestellungen</h2>
+            <table id="purchaseOrderTable">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Lieferant</th>
+                    <th>Datum</th>
+                    <th>Betrag (€)</th>
+                    <th>Status</th>
+                    <th>Aktionen</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="purchase-order.js"></script>
+</body>
+</html>

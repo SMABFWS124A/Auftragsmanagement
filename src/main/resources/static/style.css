@@ -1,31 +1,27 @@
-/* Globale Stile und Farben */
 :root {
-    --primary-color: #007bff; /* Blau für Akzente (Header, Hauptbutton) */
-    --secondary-color: #6c757d; /* Grau für dezente Elemente */
-    --background-light: #eceff1; /* Heller Hintergrund */
-    --text-dark: #343a40; /* Dunkle Schrift */
-    --success-color: #28a745; /* Grün (Speichern, Erfolgsmeldung) */
-    --error-color: #dc3545; /* Rot (Löschen, Fehlermeldung) */
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --background-light: #eceff1;
+    --text-dark: #343a40;
+    --success-color: #28a745;
+    --error-color: #dc3545;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Just Sans', Tahoma, Geneva, Verdana, sans-serif;
     background-color: var(--background-light);
     color: var(--text-dark);
     margin: 0;
-    padding: 0; /* Wichtig: Padding hier auf 0 setzen, da die Navbar volle Breite einnimmt */
+    padding: 0;
     line-height: 1.6;
 }
 
-/* -------------------------------------------------- */
-/* ABSCHNITT: NAVIGATION BAR (OPTIMIERT) */
-/* -------------------------------------------------- */
 .navbar {
     background-color: var(--primary-color);
-    padding: 10px 0; /* Etwas weniger Padding für einen kompakteren Look */
+    padding: 10px 0;
     margin-bottom: 30px;
     width: 100%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Deutlicherer Schatten */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .navbar .nav-links {
@@ -38,12 +34,11 @@ body {
 }
 
 .navbar a {
-    /* Setzt die Links als Button-ähnliche Blöcke */
     color: white;
     text-decoration: none;
     font-size: 1.1em;
     padding: 8px 15px;
-    margin: 0 5px; /* Abstand zwischen den Buttons */
+    margin: 0 5px;
     border-radius: 4px;
     transition: background-color 0.2s, transform 0.1s;
     font-weight: 500;
@@ -51,10 +46,9 @@ body {
 
 .navbar a:hover {
     background-color: #0056b3;
-    transform: translateY(-1px); /* Leichter Schwebe-Effekt */
+    transform: translateY(-1px);
 }
 
-/* Stil für den aktiven Link */
 .navbar a.active {
     background-color: white;
     color: var(--primary-color);
@@ -63,22 +57,19 @@ body {
 }
 
 .navbar .brand {
-    font-size: 1.4em; /* Etwas größer als die anderen Links */
+    font-size: 1.4em;
     font-weight: bold;
     margin-right: 40px;
     color: white;
     text-decoration: none;
-    padding-left: 0; /* Markenzeichen braucht kein Button-Padding links */
+    padding-left: 0;
 }
 
 
-/* -------------------------------------------------- */
-/* Container und Kopfzeile */
-/* -------------------------------------------------- */
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 15px; /* Das Haupt-Padding bleibt im Container */
+    padding: 0 15px;
 }
 
 h1 {
@@ -86,17 +77,12 @@ h1 {
     text-align: center;
     margin-bottom: 25px;
 }
-/* ... (Rest der Styles folgen hier) ... */
 h2 {
     color: var(--primary-color);
     border-bottom: 2px solid var(--primary-color);
     padding-bottom: 10px;
     margin-top: 0;
 }
-
-/* -------------------------------------------------- */
-/* ABSCHNITT: LAYOUT */
-/* -------------------------------------------------- */
 
 .main-content {
     display: flex;
@@ -114,18 +100,21 @@ h2 {
     min-width: 0;
 }
 
-/* -------------------------------------------------- */
-/* ABSCHNITT: FORMULAR-GESTALTUNG */
-/* -------------------------------------------------- */
-
-#userForm, #articleFormWrapper {
+#userForm, #articleFormWrapper, #supplierFormWrapper, #createOrderForm, #createUpdateSupplierForm {
     background-color: #ffffff;
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-#createUpdateForm p {
+#createOrderForm .item-group {
+    border: 1px dashed #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+
+#createUpdateForm p, #createOrderForm p {
     margin-bottom: 15px;
     display: flex;
     flex-direction: column;
@@ -136,7 +125,7 @@ label {
     margin-bottom: 5px;
 }
 
-input[type="text"], input[type="email"], input[type="number"], textarea, select {
+input[type="text"], input[type="email"], input[type="number"], input[type="tel"], textarea, select {
     padding: 10px;
     border: 1px solid #ced4da;
     border-radius: 4px;
@@ -146,15 +135,12 @@ input[type="text"], input[type="email"], input[type="number"], textarea, select 
     box-sizing: border-box;
 }
 
-input[type="text"]:focus, input[type="email"]:focus, input[type="number"]:focus, textarea:focus, select:focus {
+input[type="text"]:focus, input[type="email"]:focus, input[type="number"]:focus, input[type="tel"]:focus, textarea:focus, select:focus {
     border-color: var(--primary-color);
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
     outline: none;
 }
 
-/* -------------------------------------------------- */
-/* ABSCHNITT: BUTTON-STILE (Formulare/Allgemein) */
-/* -------------------------------------------------- */
 button {
     padding: 10px 15px;
     border: none;
@@ -166,12 +152,12 @@ button {
     font-weight: bold;
 }
 
-#submitButton {
+#submitButton, #submitOrderButton {
     background-color: var(--primary-color);
     color: white;
 }
 
-#submitButton:hover {
+#submitButton:hover, #submitOrderButton:hover {
     background-color: #0056b3;
 }
 
@@ -184,11 +170,7 @@ button {
     background-color: #5a6268;
 }
 
-/* -------------------------------------------------- */
-/* ABSCHNITT: TABELLEN-GESTALTUNG */
-/* -------------------------------------------------- */
-
-#userTable, #articleTable {
+#userTable, #articleTable, #supplierTable, #purchaseOrderTable, #orderTable {
     width: 100%;
     table-layout: fixed;
     margin-top: 0;
@@ -199,23 +181,45 @@ button {
     border-collapse: collapse;
 }
 
-/* Definiert die festen Breiten der Spalten für UserTable */
 #userTable thead th:nth-child(1) { width: 5%; }
 #userTable thead th:nth-child(2) { width: 20%; }
 #userTable thead th:nth-child(3) { width: 20%; }
-#userTable thead th:nth-child(4) { width: 35%; }
-#userTable thead th:nth-child(5) { width: 20%; }
+#userTable thead th:nth-child(4) { width: 25%; }
+#userTable thead th:nth-child(5) { width: 30%; }
 
-/* Definiert die festen Breiten der Spalten für ArticleTable */
 #articleTable thead th:nth-child(1) { width: 5%; }
-#articleTable thead th:nth-child(2) { width: 15%; }
-#articleTable thead th:nth-child(3) { width: 25%; }
+#articleTable thead th:nth-child(2) { width: 10%; }
+#articleTable thead th:nth-child(3) { width: 20%; }
 #articleTable thead th:nth-child(4) { width: 15%; }
 #articleTable thead th:nth-child(5) { width: 20%; }
-#articleTable thead th:nth-child(6) { width: 20%; }
+#articleTable thead th:nth-child(6) { width: 30%; }
 
 
-#userTable th, #userTable td, #articleTable th, #articleTable td {
+#supplierTable thead th:nth-child(1) { width: 5%; }
+#supplierTable thead th:nth-child(2) { width: 15%; }
+#supplierTable thead th:nth-child(3) { width: 15%; }
+#supplierTable thead th:nth-child(4) { width: 20%; }
+#supplierTable thead th:nth-child(5) { width: 25%; }
+#supplierTable thead th:nth-child(6) { width: 20%; }
+
+#purchaseOrderTable thead th:nth-child(1) { width: 5%; }
+#purchaseOrderTable thead th:nth-child(2) { width: 20%; }
+#purchaseOrderTable thead th:nth-child(3) { width: 15%; }
+#purchaseOrderTable thead th:nth-child(4) { width: 15%; }
+#purchaseOrderTable thead th:nth-child(5) { width: 15%; }
+#purchaseOrderTable thead th:nth-child(6) { width: 30%; }
+
+#orderTable thead th:nth-child(1) { width: 5%; }
+#orderTable thead th:nth-child(2) { width: 20%; }
+#orderTable thead th:nth-child(3) { width: 15%; }
+#orderTable thead th:nth-child(4) { width: 15%; }
+#orderTable thead th:nth-child(5) { width: 15%; }
+#orderTable thead th:nth-child(6) { width: 30%; }
+
+
+#userTable th, #userTable td, #articleTable th, #articleTable td,
+#supplierTable th, #supplierTable td, #purchaseOrderTable th, #purchaseOrderTable td,
+#orderTable th, #orderTable td {
     padding: 10px 8px;
     border-bottom: 1px solid #dee2e6;
     white-space: nowrap;
@@ -223,39 +227,62 @@ button {
     text-overflow: ellipsis;
 }
 
-#userTable th, #articleTable th {
+#userTable th, #articleTable th, #supplierTable th, #purchaseOrderTable th, #orderTable th {
     background-color: var(--primary-color);
     color: white;
     padding: 12px 8px;
     text-align: left;
 }
 
-#userTable tbody tr:hover, #articleTable tbody tr:hover {
+#userTable tbody tr:hover, #articleTable tbody tr:hover,
+#supplierTable tbody tr:hover, #purchaseOrderTable tbody tr:hover,
+#orderTable tbody tr:hover {
     background-color: #e9ecef;
 }
 
-/* Aktion-Buttons in der Tabelle (kompakter, überschreibt die allgemeinen Button-Styles) */
-#userTable button, #articleTable button {
+#userTable td:nth-child(5), #articleTable td:nth-child(6),
+#supplierTable td:nth-child(6),
+#purchaseOrderTable td:nth-child(6),
+#orderTable td:nth-child(6) {
+    white-space: normal;
+    overflow: visible;
+}
+
+
+#userTable button, #articleTable button, #supplierTable button, #purchaseOrderTable button, #orderTable button {
     padding: 3px 8px;
     margin-right: 3px;
     font-size: 13px;
     display: inline-block;
     white-space: nowrap;
+    margin-bottom: 2px;
+    min-width: 70px;
 }
 
-#userTable button:first-child, #articleTable button:first-child {
+#userTable td button:nth-child(1),
+#articleTable td button:nth-child(1),
+#supplierTable td button:nth-child(1) {
+    background-color: var(--primary-color);
+    color: white;
+    min-width: 70px;
+}
+
+#userTable td button:nth-child(2),
+#articleTable td button:nth-child(2),
+#supplierTable td button:nth-child(2) {
     background-color: #ffc107;
     color: var(--text-dark);
 }
 
-#userTable button:last-child, #articleTable button:last-child {
+#userTable button:last-child, #articleTable button:last-child, #supplierTable button:last-child {
     background-color: var(--error-color);
     color: white;
 }
 
-/* -------------------------------------------------- */
-/* ABSCHNITT: NACHRICHTEN UND HILFSELEMENTE */
-/* -------------------------------------------------- */
+#purchaseOrderTable button.receive-btn, #orderTable button.deliver-btn {
+    background-color: var(--success-color);
+    color: white;
+}
 
 #message {
     padding: 10px;
@@ -276,10 +303,6 @@ button {
     border: 1px solid var(--error-color);
 }
 
-/* -------------------------------------------------- */
-/* ABSCHNITT: RESPONSIVITÄT */
-/* -------------------------------------------------- */
-
 @media (max-width: 900px) {
     .main-content {
         flex-direction: column;
@@ -288,28 +311,27 @@ button {
         flex: 1 1 100%;
     }
 
-    /* Responsive Tabelle */
-    #userTable, #articleTable {
+    #userTable, #articleTable, #supplierTable, #purchaseOrderTable, #orderTable {
         display: block;
         margin-top: 20px;
     }
-    #userTable thead, #articleTable thead { display: none; }
+    #userTable thead, #articleTable thead, #supplierTable thead, #purchaseOrderTable thead, #orderTable thead { display: none; }
 
-    #userTable tr, #articleTable tr {
+    #userTable tr, #articleTable tr, #supplierTable tr, #purchaseOrderTable tr, #orderTable tr {
         margin-bottom: 15px;
         border: 1px solid #dee2e6;
         display: block;
         border-radius: 8px;
         overflow: hidden;
     }
-    #userTable td, #articleTable td {
+    #userTable td, #articleTable td, #supplierTable td, #purchaseOrderTable td, #orderTable td {
         text-align: right;
         padding-left: 50%;
         position: relative;
         white-space: normal;
         text-overflow: clip;
     }
-    #userTable td::before, #articleTable td::before {
+    #userTable td::before, #articleTable td::before, #supplierTable td::before, #purchaseOrderTable td::before, #orderTable td::before {
         content: attr(data-label);
         position: absolute;
         left: 0;

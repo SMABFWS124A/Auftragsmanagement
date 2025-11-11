@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Lieferantenverwaltung</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="navbar">
+    <div class="nav-links">
+        <a href="index.html" class="brand">Startseite</a>
+        <a href="user-management.html">Kunden</a>
+        <a href="article-management.html">Artikel</a>
+        <a href="supplier-management.html" class="active">Lieferanten</a>
+        <a href="purchase-order.html">Bestellwesen</a>
+        <a href="order-management.html">Kundenaufträge</a>
+    </div>
+</div>
+
+<div class="container">
+
+    <h1>Lieferanten- & Partnerverwaltung</h1>
+
+    <div class="main-content">
+
+        <div class="left-panel">
+            <div id="supplierFormWrapper">
+                <h2><span id="formTitle">Neuen Lieferanten anlegen</span></h2>
+
+                <form id="createUpdateSupplierForm">
+                    <input type="hidden" id="supplierId" name="id" value="">
+
+                    <p>
+                        <label for="supplierName">Firmenname:</label>
+                        <input type="text" id="supplierName" required>
+                    </p>
+                    <p>
+                        <label for="contactPerson">Ansprechpartner:</label>
+                        <input type="text" id="contactPerson">
+                    </p>
+                    <p>
+                        <label for="email">E-Mail:</label>
+                        <input type="email" id="email" required>
+                    </p>
+                    <!-- Telefon und Adresse wieder eingefügt -->
+                    <p>
+                        <label for="phone">Telefon:</label>
+                        <input type="tel" id="phone">
+                    </p>
+                    <p>
+                        <label for="address">Adresse:</label>
+                        <textarea id="address" rows="3"></textarea>
+                    </p>
+                    <button type="submit" id="submitButton">Lieferant speichern</button>
+                    <button type="button" id="cancelButton" style="display: none;">Abbrechen</button>
+                </form>
+                <p id="message"></p>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <h2>Alle Lieferanten</h2>
+            <table id="supplierTable">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Ansprechpartner</th>
+                    <th>E-Mail</th>
+                    <th>Aktionen</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="supplier.js"></script>
+</body>
+</html>
