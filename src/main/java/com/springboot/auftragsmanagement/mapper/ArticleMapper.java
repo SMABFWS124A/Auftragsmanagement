@@ -6,33 +6,39 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ArticleMapper {
-    public ArticleDto toDto(Article article){
+
+    public ArticleDto toDto(Article entity) {
         return new ArticleDto(
-                article.getId(),
-                article.getArticleNumber(),
-                article.getArticleName(),
-                article.getPurchasePrice(),
-                article.getSalesPrice(),
-                article.getCategory(),
-                article.getInventory(),
-                article.isActive(),
-                article.getCreationDate(),
-                article.getDescription()
+                entity.getId(),
+                entity.getArticleNumber(),
+                entity.getArticleName(),
+                entity.getPurchasePrice(),
+                entity.getSalesPrice(),
+                entity.getCategory(),
+                entity.getInventory(),
+                entity.isActive(),
+                entity.getCreationDate(),
+                entity.getDescription()
         );
     }
 
-    public Article toEntity (ArticleDto articleDto){
-        return new Article(
-                articleDto.id(),
-                articleDto.articleNumber(),
-                articleDto.articleName(),
-                articleDto.purchasePrice(),
-                articleDto.salesPrice(),
-                articleDto.category(),
-                articleDto.inventory(),
-                articleDto.active(),
-                articleDto.creationDate(),
-                articleDto.description()
-        );
+    public Article toEntity (ArticleDto dto){
+        Article entity = new Article();
+
+        if (dto.id() != null) {
+            entity.setId(dto.id());
+            entity.setCreationDate(dto.creationDate());
+        }
+
+        entity.setArticleNumber(dto.articleNumber());
+        entity.setArticleName(dto.articleName());
+        entity.setPurchasePrice(dto.purchasePrice());
+        entity.setSalesPrice(dto.salesPrice());
+        entity.setCategory(dto.category());
+        entity.setInventory(dto.inventory());
+        entity.setActive(dto.active());
+        entity.setDescription(dto.description());
+
+        return entity;
     }
 }

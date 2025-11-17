@@ -9,4 +9,5 @@ public interface PurchaseOrderService {
     List<PurchaseOrderDto> getAllOrders();
     PurchaseOrderDto updateOrderStatus(Long id, String newStatus);
     PurchaseOrderDto receiveOrder(Long id);
+    void deletePurchaseOrder(Long id);
 }

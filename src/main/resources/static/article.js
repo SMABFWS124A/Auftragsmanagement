@@ -11,6 +11,18 @@ const categoryDropdown = document.getElementById('category');
 
 const STATIC_CATEGORIES = ['Elektronik', 'Kleidung', 'Lebensmittel', 'Bücher', 'Dienstleistung'];
 
+// Helper-Funktion für Meldungen
+function showMessage(text, type) {
+    messageElement.textContent = text;
+    messageElement.className = type;
+    messageElement.style.display = 'block';
+    if (type !== 'error') {
+        setTimeout(() => {
+            messageElement.style.display = 'none';
+        }, 5000);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     populateCategoryDropdown();
     fetchAndDisplayArticles();
@@ -33,6 +45,7 @@ async function fetchAndDisplayArticles() {
         const articles = await response.json();
 
         articleTableBody.innerHTML = '';
+        messageElement.style.display = 'none'; // Meldungen beim Laden verstecken
 
         if (articles.length === 0) {
             articleTableBody.innerHTML = '<tr><td colspan="6">Keine Artikel gefunden.</td></tr>';
@@ -54,11 +67,11 @@ async function fetchAndDisplayArticles() {
             cell.setAttribute('data-label', dataLabels[1]);
 
             cell = row.insertCell();
-            cell.textContent = article.articleName;
+            cell.textContent = article.articleName; // Korrekter Feldname
             cell.setAttribute('data-label', dataLabels[2]);
 
             cell = row.insertCell();
-            cell.textContent = article.salesPrice;
+            cell.textContent = `${article.salesPrice.toFixed(2)} €`; // Formatierung
             cell.setAttribute('data-label', dataLabels[3]);
 
             cell = row.insertCell();
@@ -68,13 +81,17 @@ async function fetchAndDisplayArticles() {
             const actionsCell = row.insertCell();
             actionsCell.setAttribute('data-label', dataLabels[5]);
 
+            // Bearbeiten Button
             const editButton = document.createElement('button');
             editButton.textContent = 'Bearbeiten';
+            editButton.className = 'edit-btn';
             editButton.onclick = () => fillFormForUpdate(article);
             actionsCell.appendChild(editButton);
 
+            // Löschen Button
             const deleteButton = document.createElement('button');
             deleteButton.textContent = 'Löschen';
+            deleteButton.className = 'delete-btn';
             deleteButton.onclick = () => deleteArticle(article.id, article.articleName);
             actionsCell.appendChild(deleteButton);
         });
@@ -88,12 +105,12 @@ async function fetchAndDisplayArticles() {
 async function handleFormSubmit(event) {
     event.preventDefault();
 
-    messageElement.textContent = '';
-    messageElement.className = '';
+    messageElement.style.display = 'none';
 
     const id = articleIdField.value;
     const isUpdate = id !== '';
 
+    // Sicherstellen, dass die Werte korrekt abgerufen werden
     const articleData = {
         articleNumber: document.getElementById('articleNumber').value,
         articleName: document.getElementById('articleName').value,
@@ -102,6 +119,7 @@ async function handleFormSubmit(event) {
         category: document.getElementById('category').value,
         inventory: parseInt(document.getElementById('inventory').value),
         description: document.getElementById('description').value,
+        // Die Checkbox muss direkt geprüft werden
         active: document.getElementById('active').checked,
         creationDate: null
     };
@@ -147,18 +165,17 @@ function resetFormFields() {
     submitButton.textContent = 'Artikel speichern';
     cancelButton.style.display = 'none';
 
-    categoryDropdown.value = '';
+    // Setze die Kategorie zurück zum Platzhalter
+    categoryDropdown.value = categoryDropdown.querySelector('option[disabled]').value;
 }
 
 function resetForm() {
     resetFormFields();
-    messageElement.textContent = '';
-    messageElement.className = '';
+    messageElement.style.display = 'none';
 }
 
 function fillFormForUpdate(article) {
-    messageElement.textContent = '';
-    messageElement.className = '';
+    messageElement.style.display = 'none';
 
     articleIdField.value = article.id;
     document.getElementById('articleNumber').value = article.articleNumber;
@@ -167,7 +184,7 @@ function fillFormForUpdate(article) {
     document.getElementById('salesPrice').value = article.salesPrice;
     document.getElementById('category').value = article.category;
     document.getElementById('inventory').value = article.inventory;
-    document.getElementById('description').value = article.description;
+    document.getElementById('description').value = article.description || '';
     document.getElementById('active').checked = article.active;
 
     formTitle.textContent = `Artikel (ID: ${article.id}) bearbeiten`;
@@ -181,28 +198,23 @@ async function deleteArticle(id, name) {
         return;
     }
 
-    messageElement.textContent = '';
-    messageElement.className = '';
+    messageElement.style.display = 'none';
 
     try {
         const response = await fetch(`${BASE_URL}/${id}`, {
             method: 'DELETE'
         });
 
-        if (!response.ok) {
-            throw new Error(`Serverfehler: ${response.status}`);
+        if (response.status === 204) { // 204 No Content ist typisch für erfolgreiche DELETEs
+            showMessage(`✅ Artikel ${name} wurde erfolgreich gelöscht.`, 'success');
+            fetchAndDisplayArticles();
+        } else if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Serverfehler: ${response.status} ${errorText}`);
         }
-
-        showMessage(`✅ Artikel ${name} wurde erfolgreich gelöscht.`, 'success');
-        fetchAndDisplayArticles();
 
     } catch (error) {
         showMessage('❌ Fehler beim Löschen des Artikels: ' + error.message, 'error');
         console.error('Delete-Fehler:', error);
     }
-}
-
-function showMessage(text, type) {
-    messageElement.textContent = text;
-    messageElement.className = type;
 }

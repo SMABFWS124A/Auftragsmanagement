@@ -6,6 +6,6 @@ public record PurchaseOrderDto(
         Long id,
         Long supplierId,
         String status,
-        double totalAmount,
+        Double totalAmount,
         List<PurchaseOrderItemDto> items
 ) {}

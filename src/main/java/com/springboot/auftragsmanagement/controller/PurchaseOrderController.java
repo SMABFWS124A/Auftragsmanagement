@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/purchase-orders")
+@CrossOrigin(origins = "*")
 public class PurchaseOrderController {
 
     private final PurchaseOrderService purchaseOrderService;
@@ -23,6 +24,7 @@ public class PurchaseOrderController {
         PurchaseOrderDto savedOrder = purchaseOrderService.createOrder(orderDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedOrder);
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<PurchaseOrderDto> getOrderById(@PathVariable Long id){
         PurchaseOrderDto orderDto = purchaseOrderService.getOrderById(id);
@@ -48,5 +50,11 @@ public class PurchaseOrderController {
     public ResponseEntity<PurchaseOrderDto> receiveOrder(@PathVariable Long id){
         PurchaseOrderDto receivedOrder = purchaseOrderService.receiveOrder(id);
         return ResponseEntity.ok(receivedOrder);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
+        purchaseOrderService.deletePurchaseOrder(id);
+        return ResponseEntity.noContent().build();
     }
 }

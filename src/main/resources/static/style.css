@@ -65,7 +65,6 @@ body {
     padding-left: 0;
 }
 
-
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -181,6 +180,7 @@ button {
     border-collapse: collapse;
 }
 
+/* Tabellen-Spalten Breiten */
 #userTable thead th:nth-child(1) { width: 5%; }
 #userTable thead th:nth-child(2) { width: 20%; }
 #userTable thead th:nth-child(3) { width: 20%; }
@@ -193,7 +193,6 @@ button {
 #articleTable thead th:nth-child(4) { width: 15%; }
 #articleTable thead th:nth-child(5) { width: 20%; }
 #articleTable thead th:nth-child(6) { width: 30%; }
-
 
 #supplierTable thead th:nth-child(1) { width: 5%; }
 #supplierTable thead th:nth-child(2) { width: 15%; }
@@ -259,6 +258,7 @@ button {
     min-width: 70px;
 }
 
+/* Spezifische Button Farben */
 #userTable td button:nth-child(1),
 #articleTable td button:nth-child(1),
 #supplierTable td button:nth-child(1) {
@@ -339,5 +339,14 @@ button {
         padding-left: 10px;
         font-weight: bold;
         text-align: left;
+    }
+    #purchaseOrderTable button.delete-btn, #orderTable button.delete-btn {
+        background-color: var(--error-color);
+        color: white;
+    }
+
+    #purchaseOrderTable button.delete-btn:hover, #orderTable button.delete-btn:hover {
+        background-color: #c82333;
+        transform: translateY(-1px);
     }
 }

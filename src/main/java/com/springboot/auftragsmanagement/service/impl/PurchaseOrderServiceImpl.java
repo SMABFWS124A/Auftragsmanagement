@@ -124,4 +124,11 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
         PurchaseOrder savedOrder = orderRepository.save(order);
         return mapToDto(savedOrder);
     }
+
+    @Override
+    public void deletePurchaseOrder(Long id) {
+        PurchaseOrder order = orderRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("PurchaseOrder", "id", id));
+        orderRepository.delete(order);
+    }
 }

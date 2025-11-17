@@ -3,75 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Startseite – Auftrags-Hub</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #007bff, #00aaff);
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 0;
-    }
-
-    .login-container {
-      background: white;
-      padding: 40px;
-      border-radius: 15px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-      width: 350px;
-      text-align: center;
-    }
-
-    h2 {
-      color: #333;
-      margin-bottom: 20px;
-    }
-
-    input[type="email"], input[type="password"] {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 14px;
-    }
-
-    button {
-      width: 100%;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      padding: 10px;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-      margin-top: 10px;
-      transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #0056b3;
-    }
-
-    p {
-      font-size: 14px;
-      margin-top: 15px;
-      color: #555;
-    }
-  </style>
+  <title>Warenwirtschaftssystem</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Just+Sans:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-<div class="login-container">
-  <h2>Login <br> Integriertes CRM- & Warenwirtschaftssystem (WWS)</h2>
-  <form action="user-management.html">
-    <input type="email" placeholder="E-Mail-Adresse" required>
-    <input type="password" placeholder="Passwort" required>
-    <button type="submit">Einloggen</button>
-  </form>
-  <p>Bitte mit Ihrer registrierten E-Mail anmelden.<br>
-    Sollten Sie Ihre Anmeldedaten vergessen haben, melden Sie sich an einen Systemadministrator.</p>
-</div>
-</body>
-</html>
+
+<nav class="navbar">
+  <div class="nav-links">
+    <a href="#" class="brand">WaWi System</a>
+    <a href="#" class="active">Dashboard</a>
+    <a href="#">Bestellungen</a>
+    <a href="#">Artikel</a>
+    <a href="#">Lieferanten</a>
+    <a href="#">Kunden</a>
+  </div>
+</nav>
+
+<div class="container">
+  <h1>Verwaltungsoberfläche</h1>
+
+  <div id="message" style="display: none;"></div>
+
+  <div class="main-content">
+
+    <div class="left-panel">
+
+      <div id="createOrderForm">
