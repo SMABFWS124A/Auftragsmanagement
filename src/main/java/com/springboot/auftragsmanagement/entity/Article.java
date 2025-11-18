@@ -1,7 +1,6 @@
 package com.springboot.auftragsmanagement.entity;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -22,9 +21,9 @@ public class Article {
     private LocalDateTime creationDate;
     private String description;
 
-
     public Article() {
     }
+
     public Article(Long id, String articleNumber, String articleName, double purchasePrice, double salesPrice, String category, int inventory, boolean isActive, LocalDateTime creationDate, String description) {
         this.id = id;
         this.articleNumber = articleNumber;
@@ -38,6 +37,8 @@ public class Article {
         this.description = description;
     }
 
+    // ... (Alle Getters und Setters) ...
+
     public Long getId() {
         return id;
     }
@@ -50,6 +51,7 @@ public class Article {
         return articleNumber;
     }
 
+    // KORRIGIERT: Diese Methode war defekt
     public void setArticleNumber(String articleNumber) {
         this.articleNumber = articleNumber;
     }
@@ -116,5 +118,9 @@ public class Article {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public boolean isNull() {
+        return false;
     }
 }

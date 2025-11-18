@@ -1,11 +1,14 @@
 package com.springboot.auftragsmanagement.service.impl;
 
 import com.springboot.auftragsmanagement.dto.PurchaseOrderDto;
+import com.springboot.auftragsmanagement.dto.PurchaseOrderItemDto;
 import com.springboot.auftragsmanagement.entity.Article;
 import com.springboot.auftragsmanagement.entity.PurchaseOrder;
 import com.springboot.auftragsmanagement.entity.PurchaseOrderItem;
 import com.springboot.auftragsmanagement.entity.Supplier;
 import com.springboot.auftragsmanagement.exception.ResourceNotFoundException;
+import com.springboot.auftragsmanagement.factory.PurchaseOrderFactory;
+import com.springboot.auftragsmanagement.factory.PurchaseOrderItemFactory;
 import com.springboot.auftragsmanagement.repository.ArticleRepository;
 import com.springboot.auftragsmanagement.repository.PurchaseOrderRepository;
 import com.springboot.auftragsmanagement.repository.SupplierRepository;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PurchaseOrderServiceImpl implements PurchaseOrderService {
@@ -23,27 +27,51 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     private final SupplierRepository supplierRepository;
     private final ArticleRepository articleRepository;
     private final ArticleService articleService;
-
-    private PurchaseOrderDto mapToDto(PurchaseOrder entity) {
-        return new PurchaseOrderDto(
-                entity.getId(),
-                entity.getSupplier().getId(),
-                entity.getStatus(),
-                entity.getTotalAmount(),
-                null
-        );
-    }
+    private final PurchaseOrderFactory purchaseOrderFactory;
+    private final PurchaseOrderItemFactory purchaseOrderItemFactory;
 
     public PurchaseOrderServiceImpl(
             PurchaseOrderRepository orderRepository,
             SupplierRepository supplierRepository,
             ArticleRepository articleRepository,
-            ArticleService articleService
+            ArticleService articleService,
+            PurchaseOrderFactory purchaseOrderFactory,
+            PurchaseOrderItemFactory purchaseOrderItemFactory
     ) {
         this.orderRepository = orderRepository;
         this.supplierRepository = supplierRepository;
         this.articleRepository = articleRepository;
         this.articleService = articleService;
+        this.purchaseOrderFactory = purchaseOrderFactory;
+        this.purchaseOrderItemFactory = purchaseOrderItemFactory;
+    }
+
+    private PurchaseOrderItemDto mapItemToDto(PurchaseOrderItem item) {
+        return purchaseOrderItemFactory.createPurchaseOrderItem(
+                item.getArticle().getId(),
+                item.getQuantity(),
+                item.getUnitPrice()
+        );
+    }
+
+    // KORRIGIERTE mapToDto Methode, die die erweiterte Factory nutzt
+    private PurchaseOrderDto mapToDto(PurchaseOrder entity) {
+        List<PurchaseOrderItemDto> itemDtos = entity.getItems() != null
+                ? entity.getItems().stream()
+                .map(this::mapItemToDto)
+                .collect(Collectors.toList())
+                : List.of();
+
+        // **VERWENDUNG DER ERWEITERTEN FACTORY-METHODE**
+        return purchaseOrderFactory.createPurchaseOrder(
+                entity.getSupplier().getId(),
+                entity.getSupplier().getName(),   // <-- NEU: Supplier Name
+                entity.getOrderDate(),            // <-- NEU: Order Date
+                entity.getId(),
+                entity.getStatus(),
+                entity.getTotalAmount(),
+                itemDtos
+        );
     }
 
     @Override
@@ -55,6 +83,8 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
         PurchaseOrder order = new PurchaseOrder();
         order.setSupplier(supplier);
         order.setStatus("BESTELLT");
+        // HINWEIS: Hier sollte order.setOrderDate(LocalDateTime.now()) gesetzt werden,
+        // falls nicht bereits in der Entity mittels @CreationTimestamp oder ähnlichem erfolgt.
 
         List<PurchaseOrderItem> items = orderDto.items().stream().map(itemDto -> {
             Article article = articleRepository.findById(itemDto.articleId())
@@ -92,7 +122,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     public List<PurchaseOrderDto> getAllOrders() {
         return orderRepository.findAll().stream()
                 .map(this::mapToDto)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -105,6 +135,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
         PurchaseOrder updatedOrder = orderRepository.save(order);
         return mapToDto(updatedOrder);
     }
+
     @Override
     @Transactional
     public PurchaseOrderDto receiveOrder(Long id) {

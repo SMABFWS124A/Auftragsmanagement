@@ -23,7 +23,6 @@ public class PurchaseOrder {
     @OneToMany(mappedBy = "purchaseOrder", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PurchaseOrderItem> items;
 
-
     public PurchaseOrder() {
         this.orderDate = LocalDateTime.now();
         this.status = "NEU";
@@ -41,4 +40,9 @@ public class PurchaseOrder {
     public void setTotalAmount(double totalAmount) { this.totalAmount = totalAmount; }
     public List<PurchaseOrderItem> getItems() { return items; }
     public void setItems(List<PurchaseOrderItem> items) { this.items = items; }
+
+    // Method to check if the instance is a null object
+    public boolean isNull() {
+        return false;
+    }
 }

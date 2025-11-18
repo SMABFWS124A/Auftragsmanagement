@@ -8,6 +8,6 @@ public record OrderDto(
         Long customerId,
         LocalDateTime orderDate,
         String status,
-        double totalAmount,
+        Double totalAmount,
         List<OrderItemDto> items
 ) {}

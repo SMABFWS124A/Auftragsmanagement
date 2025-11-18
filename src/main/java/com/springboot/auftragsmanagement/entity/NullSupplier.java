@@ -17,6 +17,7 @@ public class NullSupplier extends Supplier {
         return INSTANCE;
     }
 
+    @Override
     public boolean isNull() {
         return true;
     }

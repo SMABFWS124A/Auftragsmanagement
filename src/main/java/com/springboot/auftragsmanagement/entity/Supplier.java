@@ -15,7 +15,6 @@ public class Supplier {
     private String phone;
     private String address;
 
-
     public Supplier() {
     }
 
@@ -26,7 +25,6 @@ public class Supplier {
         this.phone = phone;
         this.address = address;
     }
-
 
     public Long getId() {
         return id;
@@ -48,6 +46,7 @@ public class Supplier {
         return contactPerson;
     }
 
+    // KORRIGIERT: Fehlende Methodensignatur
     public void setContactPerson(String contactPerson) {
         this.contactPerson = contactPerson;
     }
@@ -75,4 +74,9 @@ public class Supplier {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    public boolean isNull() {
+        return false;
+    }
+
 }

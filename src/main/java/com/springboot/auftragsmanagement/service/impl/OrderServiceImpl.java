@@ -1,13 +1,17 @@
 package com.springboot.auftragsmanagement.service.impl;
 
 import com.springboot.auftragsmanagement.dto.OrderDto;
-import com.springboot.auftragsmanagement.dto.OrderItemDto; // Muss existieren!
+import com.springboot.auftragsmanagement.dto.OrderItemDto;
+import com.springboot.auftragsmanagement.dto.PurchaseOrderDto;
+import com.springboot.auftragsmanagement.dto.PurchaseOrderItemDto;
 import com.springboot.auftragsmanagement.entity.Article;
 import com.springboot.auftragsmanagement.entity.Order;
 import com.springboot.auftragsmanagement.entity.OrderItem;
 import com.springboot.auftragsmanagement.entity.User;
 import com.springboot.auftragsmanagement.exception.ResourceNotFoundException;
 import com.springboot.auftragsmanagement.exception.StockExceededException;
+import com.springboot.auftragsmanagement.factory.PurchaseOrderFactory;
+import com.springboot.auftragsmanagement.factory.PurchaseOrderItemFactory;
 import com.springboot.auftragsmanagement.repository.ArticleRepository;
 import com.springboot.auftragsmanagement.repository.OrderRepository;
 import com.springboot.auftragsmanagement.repository.UserRepository;
@@ -17,7 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors; // Für die korrekte DTO-Abbildung benötigt
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -26,21 +30,24 @@ public class OrderServiceImpl implements OrderService {
     private final UserRepository userRepository;
     private final ArticleRepository articleRepository;
     private final ArticleService articleService;
+    private final PurchaseOrderFactory purchaseOrderFactory;
+    private final PurchaseOrderItemFactory purchaseOrderItemFactory;
 
     public OrderServiceImpl(
             OrderRepository orderRepository,
             UserRepository userRepository,
             ArticleRepository articleRepository,
-            ArticleService articleService) {
+            ArticleService articleService,
+            PurchaseOrderFactory purchaseOrderFactory,
+            PurchaseOrderItemFactory purchaseOrderItemFactory) {
         this.orderRepository = orderRepository;
         this.userRepository = userRepository;
         this.articleRepository = articleRepository;
         this.articleService = articleService;
+        this.purchaseOrderFactory = purchaseOrderFactory;
+        this.purchaseOrderItemFactory = purchaseOrderItemFactory;
     }
 
-    /**
-     * Helferfunktion, um OrderItem-Entity in OrderItemDto umzuwandeln.
-     */
     private OrderItemDto mapItemToDto(OrderItem item) {
         return new OrderItemDto(
                 item.getArticle().getId(),
@@ -49,16 +56,12 @@ public class OrderServiceImpl implements OrderService {
         );
     }
 
-    /**
-     * Helferfunktion, um Order-Entity in OrderDto umzuwandeln (inkl. Items).
-     */
     private OrderDto mapToDto(Order entity) {
-        // Mappe die Liste der OrderItems zu OrderItemDtos
         List<OrderItemDto> itemDtos = entity.getItems() != null
                 ? entity.getItems().stream()
                 .map(this::mapItemToDto)
                 .collect(Collectors.toList())
-                : List.of(); // Gib leere Liste zurück, falls Items null sind
+                : List.of();
 
         return new OrderDto(
                 entity.getId(),
@@ -85,7 +88,7 @@ public class OrderServiceImpl implements OrderService {
                     .orElseThrow(() -> new ResourceNotFoundException("Article", "id", itemDto.articleId()));
 
             OrderItem item = new OrderItem();
-            item.setOrder(order); // Wichtig für bidirektionale Beziehung
+            item.setOrder(order);
             item.setArticle(article);
             item.setQuantity(itemDto.quantity());
             item.setUnitPrice(itemDto.unitPrice());
@@ -100,7 +103,6 @@ public class OrderServiceImpl implements OrderService {
         order.setItems(items);
         order.setTotalAmount(calculatedTotal);
 
-        // Dank CascadeType.ALL in Order.java werden die Items automatisch mitgespeichert
         Order savedOrder = orderRepository.save(order);
 
         return mapToDto(savedOrder);
@@ -110,7 +112,7 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderDto> getAllOrders() {
         return orderRepository.findAll().stream()
                 .map(this::mapToDto)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -124,21 +126,12 @@ public class OrderServiceImpl implements OrderService {
         }
 
         for (OrderItem item : order.getItems()) {
-            try {
-                // Reduziert den Bestand (Verkauf)
-                articleService.updateInventory(item.getArticle().getId(), -item.getQuantity());
-
-            } catch (StockExceededException e) {
-                // Führt zum Rollback der Transaktion
-                throw e;
-            } catch (Exception e) {
-                throw new IllegalStateException("Unerwarteter Fehler bei Bestandsupdate für Artikel " + item.getArticle().getArticleName() + ": " + e.getMessage());
-            }
+            articleService.updateInventory(item.getArticle().getId(), -item.getQuantity());
         }
 
         order.setStatus("GELIEFERT");
-
         Order savedOrder = orderRepository.save(order);
+
         return mapToDto(savedOrder);
     }
 
@@ -149,10 +142,9 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new ResourceNotFoundException("Order", "id", orderId));
 
         if (!"GELIEFERT".equals(order.getStatus())) {
-            throw new IllegalStateException("Der Auftrag mit ID " + orderId + " kann nur im Status 'GELIEFERT' gelöscht werden (aktueller Status: " + order.getStatus() + ").");
+            throw new IllegalStateException("Der Auftrag mit ID " + orderId + " kann nur im Status 'GELIEFERT' gelöscht werden.");
         }
 
-        // Durch orphanRemoval=true in Order.java werden die OrderItems ebenfalls gelöscht.
         orderRepository.delete(order);
     }
 }

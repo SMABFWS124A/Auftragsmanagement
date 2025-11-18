@@ -19,15 +19,12 @@ public class OrderItem {
     private Article article;
 
     private int quantity;
-    private double unitPrice; // Der Verkaufspreis zum Zeitpunkt der Bestellung
+    private double unitPrice;
 
-    // --- Konstruktoren, Getter und Setter ---
-
-    public OrderItem() {}
-
+    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-    public Order getOrder() { return order; }
+
     public void setOrder(Order order) { this.order = order; }
     public Article getArticle() { return article; }
     public void setArticle(Article article) { this.article = article; }

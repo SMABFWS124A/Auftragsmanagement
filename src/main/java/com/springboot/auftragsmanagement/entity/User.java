@@ -10,7 +10,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     private String firstName;
     private String lastName;
     @Column(unique = true)
@@ -25,6 +24,8 @@ public class User {
         this.lastName = lastName;
         this.email = email;
     }
+
+    // ... (Alle Ihre Getters und Setters bleiben unverändert) ...
 
     public Long getId() {
         return id;
@@ -56,5 +57,8 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+    public boolean isNull() {
+        return false;
     }
 }

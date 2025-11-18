@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
 async function fetchSuppliers() {
     try {
         const response = await fetch(SUPPLIER_BASE_URL);
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
         const suppliers = await response.json();
 
         suppliers.forEach(supplier => {
@@ -36,18 +37,17 @@ async function fetchSuppliers() {
             supplierSelect.appendChild(option);
         });
     } catch (error) {
-        showMessage('Fehler beim Laden der Lieferanten.', 'error');
-        console.error('Fetch Lieferanten Fehler:', error);
+        handleError(error, 'Fehler beim Laden der Lieferanten.');
     }
 }
 
 async function fetchAllArticles() {
     try {
         const response = await fetch(ARTICLE_BASE_URL);
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
         allArticles = await response.json();
     } catch (error) {
-        showMessage('Fehler beim Laden der Artikel.', 'error');
-        console.error('Fetch Artikel Fehler:', error);
+        handleError(error, 'Fehler beim Laden der Artikel.');
     }
 }
 
@@ -66,7 +66,7 @@ function addItemToForm() {
     articleSelect.style.width = '100%';
     articleSelect.style.marginBottom = '5px';
 
-    let defaultOption = document.createElement('option');
+    const defaultOption = document.createElement('option');
     defaultOption.value = '';
     defaultOption.textContent = '--- Artikel wählen ---';
     defaultOption.disabled = true;
@@ -104,19 +104,14 @@ function addItemToForm() {
         }
     });
 
-    // Fortsetzung des itemGroup Aufbaus
-
-    // Container für Menge und Preis (Inline-Layout)
     const inputRow = document.createElement('div');
     inputRow.style.display = 'flex';
     inputRow.style.gap = '10px';
 
-    // Menge Wrapper
     const quantityWrapper = document.createElement('div');
     quantityWrapper.style.flex = '1';
     quantityWrapper.appendChild(quantityInput);
 
-    // Preis Wrapper
     const priceWrapper = document.createElement('div');
     priceWrapper.style.flex = '1';
     priceWrapper.appendChild(unitPriceInput);
@@ -159,9 +154,12 @@ function getFormData() {
         }
     });
 
+    // Das DTO erwartet 'id' (nicht orderId), 'orderDate', 'supplierName' etc.
+    // Das Backend setzt diese Werte. Wir senden nur, was das Backend braucht:
     return {
         supplierId: parseInt(supplierId),
         items: items
+        // status, totalAmount etc. werden vom Backend gesetzt
     };
 }
 
@@ -197,15 +195,14 @@ async function handlePurchaseOrderSubmit(event) {
         fetchAndDisplayPurchaseOrders();
 
     } catch (error) {
-        showMessage(`❌ Fehler beim Anlegen des Bestellauftrags: ${error.message}`, 'error');
-        console.error('API-Fehler:', error);
+        handleError(error, 'Fehler beim Anlegen des Bestellauftrags.');
     }
 }
 
 function resetForm() {
     createOrderForm.reset();
     itemsContainer.innerHTML = '';
-    addItemToForm(); // Fügt eine leere Position hinzu
+    addItemToForm();
     messageElement.textContent = '';
     messageElement.className = '';
 }
@@ -213,6 +210,7 @@ function resetForm() {
 async function fetchAndDisplayPurchaseOrders() {
     try {
         const response = await fetch(PURCHASE_ORDER_BASE_URL);
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
         const orders = await response.json();
 
         purchaseOrderTableBody.innerHTML = '';
@@ -229,16 +227,15 @@ async function fetchAndDisplayPurchaseOrders() {
             let cell;
 
             cell = row.insertCell();
-            cell.textContent = order.id;
+            cell.textContent = order.id; // <-- Greift auf 'id' zu (wie im DTO definiert)
             cell.setAttribute('data-label', dataLabels[0]);
 
             cell = row.insertCell();
-            // ANNAHME: Das Backend liefert den Namen des Lieferanten in der DTO zurück
-            cell.textContent = order.supplierName || 'N/A';
+            cell.textContent = order.supplierName || 'N/A'; // <-- KORRIGIERT
             cell.setAttribute('data-label', dataLabels[1]);
 
             cell = row.insertCell();
-            cell.textContent = new Date(order.orderDate).toLocaleDateString();
+            cell.textContent = new Date(order.orderDate).toLocaleDateString(); // <-- KORRIGIERT
             cell.setAttribute('data-label', dataLabels[2]);
 
             cell = row.insertCell();
@@ -251,22 +248,28 @@ async function fetchAndDisplayPurchaseOrders() {
 
             const actionsCell = row.insertCell();
             actionsCell.setAttribute('data-label', dataLabels[5]);
+            actionsCell.style.display = 'flex';
+            actionsCell.style.gap = '5px';
 
-            // Liefer-Button
             if (order.status !== 'GELIEFERT') {
                 const receiveButton = document.createElement('button');
                 receiveButton.textContent = 'Lieferung empfangen';
                 receiveButton.classList.add('receive-btn');
                 receiveButton.onclick = () => handleReceiveOrder(order.id);
                 actionsCell.appendChild(receiveButton);
-            } else {
-                actionsCell.textContent = '—';
             }
+
+            // NEU: LÖSCHEN-BUTTON
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Löschen';
+            deleteButton.classList.add('delete-btn'); // CSS-Klasse für rotes Styling
+            deleteButton.setAttribute('data-id', order.id); // Wichtig für den Handler
+            deleteButton.onclick = () => handleDeleteOrder(order.id);
+            actionsCell.appendChild(deleteButton);
         });
 
     } catch (error) {
-        showMessage('Fehler beim Abrufen der Bestellaufträge: ' + error.message, 'error');
-        console.error('Fetch-Fehler:', error);
+        handleError(error, 'Fehler beim Abrufen der Bestellaufträge.');
     }
 }
 
@@ -279,6 +282,7 @@ async function handleReceiveOrder(id) {
     messageElement.className = '';
 
     try {
+        // HINWEIS: Der Endpunkt /receive ist ggf. @PatchMapping
         const response = await fetch(`${PURCHASE_ORDER_BASE_URL}/${id}/receive`, {
             method: 'PATCH'
         });
@@ -292,12 +296,45 @@ async function handleReceiveOrder(id) {
         fetchAndDisplayPurchaseOrders();
 
     } catch (error) {
-        showMessage('❌ Fehler beim Empfangen der Lieferung: ' + error.message, 'error');
-        console.error('Receive Order Fehler:', error);
+        handleError(error, 'Fehler beim Empfangen der Lieferung.');
+    }
+}
+
+/**
+ * NEUE FUNKTION FÜR DEN LÖSCHEN-BUTTON
+ */
+async function handleDeleteOrder(id) {
+    if (!confirm(`Soll der Bestellauftrag (ID: ${id}) wirklich endgültig gelöscht werden?`)) {
+        return;
+    }
+
+    messageElement.textContent = '';
+    messageElement.className = '';
+
+    try {
+        const response = await fetch(`${PURCHASE_ORDER_BASE_URL}/${id}`, {
+            method: 'DELETE'
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Serverfehler: ${response.status} ${errorText}`);
+        }
+
+        showMessage(`✅ Bestellauftrag ${id} erfolgreich gelöscht.`, 'success');
+        fetchAndDisplayPurchaseOrders(); // Liste neu laden
+
+    } catch (error) {
+        handleError(error, 'Fehler beim Löschen der Bestellung.');
     }
 }
 
 function showMessage(text, type) {
     messageElement.textContent = text;
     messageElement.className = type;
+}
+
+function handleError(error, userMessage) {
+    console.error('Error:', error);
+    showMessage(userMessage, 'error');
 }

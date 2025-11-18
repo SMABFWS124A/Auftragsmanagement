@@ -19,8 +19,7 @@ public class PurchaseOrderItem {
     private Article article;
 
     private int quantity;
-    private double unitPrice;
-
+    private Double unitPrice;
 
     public PurchaseOrderItem() {}
 
@@ -34,4 +33,8 @@ public class PurchaseOrderItem {
     public void setQuantity(int quantity) { this.quantity = quantity; }
     public double getUnitPrice() { return unitPrice; }
     public void setUnitPrice(double unitPrice) { this.unitPrice = unitPrice; }
+
+    public boolean isNull() {
+        return false;
+    }
 }
