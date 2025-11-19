@@ -7,6 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SpringbootAuftragsmanagementApplication {
 
 	public static void main(String[] args) {
+		long firstOrderNumber = OrderNumberGenerator.getInstance().generateNextOrderNumber();
+		System.out.println("Erste generierte Auftragsnummer (Singleton): " + firstOrderNumber);
 		SpringApplication.run(SpringbootAuftragsmanagementApplication.class, args);
 	}
 

@@ -1,7 +1,6 @@
 package com.springboot.auftragsmanagement.strategy;
 
 import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.core.annotation.OrderUtils;
 
 final class StrategyOrderExtractor {
@@ -10,9 +9,9 @@ final class StrategyOrderExtractor {
     }
 
     static int getOrder(OrderPricingStrategy strategy) {
-        Order order = OrderUtils.getOrder(strategy.getClass());
+        Integer order = OrderUtils.getOrder(strategy.getClass());
         if (order != null) {
-            return order.value();
+            return order;
         }
         return strategy instanceof Ordered ordered
                 ? ordered.getOrder()
