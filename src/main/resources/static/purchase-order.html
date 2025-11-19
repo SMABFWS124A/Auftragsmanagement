@@ -2,77 +2,97 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bestellwesen & Einkauf</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<div class="page-shell">
+    <header class="navbar">
+        <div class="nav-links">
+            <a href="index.html" class="brand">Auftragscockpit</a>
+            <a href="user-management.html">Kunden</a>
+            <a href="article-management.html">Artikel</a>
+            <a href="supplier-management.html">Lieferanten</a>
+            <a href="purchase-order.html" class="active">Bestellwesen</a>
+            <a href="order-management.html">Kundenaufträge</a>
+        </div>
+    </header>
 
-<div class="navbar">
-    <div class="nav-links">
-        <a href="index.html" class="brand">Startseite</a>
-        <a href="user-management.html">Kunden</a>
-        <a href="article-management.html">Artikel</a>
-        <a href="supplier-management.html">Lieferanten</a>
-        <a href="purchase-order.html" class="active">Bestellwesen</a>
-        <a href="order-management.html">Kundenaufträge</a>
-    </div>
-</div>
+    <div class="container">
+        <section class="page-header">
+            <p class="eyebrow">Einkauf & Warenfluss</p>
+            <h1>Bestellungen planen & empfangen</h1>
+            <p>Führe neue Bestellungen aus, verfolge Lieferstatus und dokumentiere Wareneingänge in Echtzeit.</p>
+            <div class="page-actions">
+                <span class="pill success">Workflow aktiv</span>
+                <span class="pill neutral">Automatisierte Prüfungen</span>
+            </div>
+        </section>
 
-<div class="container">
-
-    <h1>Bestellwesen & Wareneingang</h1>
-
-    <div class="main-content">
-
-        <div class="left-panel">
-            <h2>Neue Bestellung aufgeben</h2>
-
-            <form id="createOrderForm">
-
-                <p>
-                    <label for="supplierSelect">Lieferant auswählen:</label>
-                    <select id="supplierSelect" required>
-                        <option value="" disabled selected>Bitte Lieferant wählen</option>
-                    </select>
-                </p>
-
-                <h3>Bestellpositionen</h3>
-                <div id="itemsContainer">
-                </div>
-
-                <p>
-                    <button type="button" id="addItemButton">➕ Position hinzufügen</button>
-                </p>
-
-                <p style="margin-top: 20px;">
-                    <button type="submit" id="submitOrderButton">Bestellung absenden</button>
-                </p>
-            </form>
-            <p id="message"></p>
+        <div class="status-grid">
+            <div class="status-card">
+                <h3>Lieferantenfokus</h3>
+                <p>Wähle Partner direkt aus der gepflegten Liste.</p>
+            </div>
+            <div class="status-card">
+                <h3>Positionen</h3>
+                <p>Baue Bestellungen modular über Positionen auf.</p>
+            </div>
+            <div class="status-card">
+                <h3>Warenzugang</h3>
+                <p>Markiere Wareneingänge sofort als erhalten.</p>
+            </div>
         </div>
 
-        <div class="right-panel">
-            <h2>Offene & aktuelle Bestellungen</h2>
-            <table id="purchaseOrderTable">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Lieferant</th>
-                    <th>Datum</th>
-                    <th>Betrag (€)</th>
-                    <th>Status</th>
-                    <th>Aktionen</th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+        <div class="hint-banner">🛒 Hinweis: Nutze „Position hinzufügen“, um unterschiedliche Artikel in einer Bestellung zu kombinieren.</div>
+
+        <div class="main-content">
+            <div class="left-panel">
+                <h2>Neue Bestellung aufgeben</h2>
+
+                <form id="createOrderForm">
+                    <p>
+                        <label for="supplierSelect">Lieferant auswählen:</label>
+                        <select id="supplierSelect" required>
+                            <option value="" disabled selected>Bitte Lieferant wählen</option>
+                        </select>
+                    </p>
+
+                    <h3>Bestellpositionen</h3>
+                    <div id="itemsContainer"></div>
+
+                    <p>
+                        <button type="button" id="addItemButton">➕ Position hinzufügen</button>
+                    </p>
+
+                    <p style="margin-top: 20px;">
+                        <button type="submit" id="submitOrderButton">Bestellung absenden</button>
+                    </p>
+                </form>
+                <p id="message"></p>
+            </div>
+
+            <div class="right-panel">
+                <h2>Offene & aktuelle Bestellungen</h2>
+                <table id="purchaseOrderTable">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Lieferant</th>
+                        <th>Datum</th>
+                        <th>Betrag (€)</th>
+                        <th>Status</th>
+                        <th>Aktionen</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
         </div>
-
     </div>
-
 </div>
-
 <script src="purchase-order.js"></script>
 </body>
 </html>

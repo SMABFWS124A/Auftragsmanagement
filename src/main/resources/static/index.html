@@ -1,450 +1,512 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <title>Dashboard – Benutzerinfo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg-gradient: radial-gradient(circle at top, #4f46e5, #020617);
-      --card-bg: rgba(15, 23, 42, 0.9);
-      --accent: #4f46e5;
-      --accent-soft: rgba(79, 70, 229, 0.15);
-      --text: #e5e7eb;
-      --text-muted: #9ca3af;
-      --chip-bg: rgba(15, 23, 42, 0.8);
-      --border-subtle: rgba(148, 163, 184, 0.2);
-      --shadow-soft: 0 20px 40px rgba(0, 0, 0, 0.4);
-    }
+    <meta charset="UTF-8">
+    <title>Dashboard – Benutzerinfo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+    <style>
+        :root {
+          --bg-gradient: radial-gradient(circle at top, #4f46e5, #020617);
+          --card-bg: rgba(15, 23, 42, 0.9);
+          --accent: #4f46e5;
+          --accent-soft: rgba(79, 70, 229, 0.15);
+          --text: #e5e7eb;
+          --text-muted: #9ca3af;
+          --chip-bg: rgba(15, 23, 42, 0.8);
+          --border-subtle: rgba(148, 163, 184, 0.2);
+          --shadow-soft: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+        * {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+        }
 
-    body {
-      font-family: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--bg-gradient);
-      color: var(--text);
-      padding: 24px;
-    }
+        body {
+          font-family: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: var(--bg-gradient);
+          color: var(--text);
+          padding: 24px;
+        }
 
-    .card {
-      width: 100%;
-      max-width: 720px;
-      background: var(--card-bg);
-      border-radius: 28px;
-      padding: 28px 26px;
-      box-shadow: var(--shadow-soft);
-      border: 1px solid rgba(148, 163, 184, 0.25);
-      backdrop-filter: blur(20px);
-      position: relative;
-      overflow: hidden;
-    }
+        .card {
+          width: 100%;
+          max-width: 720px;
+          background: var(--card-bg);
+          border-radius: 28px;
+          padding: 28px 26px;
+          box-shadow: var(--shadow-soft);
+          border: 1px solid rgba(148, 163, 184, 0.25);
+          backdrop-filter: blur(20px);
+          position: relative;
+          overflow: hidden;
+        }
 
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: -40%;
-      background: radial-gradient(circle at top right, rgba(79, 70, 229, 0.35), transparent 55%);
-      opacity: 0.9;
-      pointer-events: none;
-      z-index: 0;
-    }
+        .card::before {
+          content: "";
+          position: absolute;
+          inset: -40%;
+          background: radial-gradient(circle at top right, rgba(79, 70, 229, 0.35), transparent 55%);
+          opacity: 0.9;
+          pointer-events: none;
+          z-index: 0;
+        }
 
-    .card-inner {
-      position: relative;
-      z-index: 1;
-    }
+        .card-inner {
+          position: relative;
+          z-index: 1;
+        }
 
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 20px;
-    }
+        .header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 16px;
+          margin-bottom: 20px;
+        }
 
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.11em;
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: var(--accent-soft);
-      border: 1px solid rgba(129, 140, 248, 0.4);
-      color: #c7d2fe;
-    }
+        .badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 0.75rem;
+          text-transform: uppercase;
+          letter-spacing: 0.11em;
+          padding: 6px 12px;
+          border-radius: 999px;
+          background: var(--accent-soft);
+          border: 1px solid rgba(129, 140, 248, 0.4);
+          color: #c7d2fe;
+        }
 
-    .badge-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: #22c55e;
-      box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.2);
-    }
+        .badge-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 999px;
+          background: #22c55e;
+          box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.2);
+        }
 
-    .user-block h1 {
-      font-size: clamp(1.6rem, 3vw, 2.2rem);
-      font-weight: 600;
-      margin-bottom: 4px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+        .user-block h1 {
+          font-size: clamp(1.6rem, 3vw, 2.2rem);
+          font-weight: 600;
+          margin-bottom: 4px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
 
-    .user-block h1 span.username {
-      background: rgba(15, 23, 42, 0.7);
-      border-radius: 999px;
-      padding: 4px 12px;
-      border: 1px solid rgba(148, 163, 184, 0.3);
-      font-size: 0.95rem;
-      font-weight: 500;
-    }
+        .user-block h1 span.username {
+          background: rgba(15, 23, 42, 0.7);
+          border-radius: 999px;
+          padding: 4px 12px;
+          border: 1px solid rgba(148, 163, 184, 0.3);
+          font-size: 0.95rem;
+          font-weight: 500;
+        }
 
-    .user-block p {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-    }
+        .user-block p {
+          font-size: 0.9rem;
+          color: var(--text-muted);
+        }
 
-    .time-block {
-      text-align: right;
-    }
+        .time-block {
+          text-align: right;
+        }
 
-    .time-label {
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-    }
+        .time-label {
+          font-size: 0.8rem;
+          text-transform: uppercase;
+          letter-spacing: 0.12em;
+          color: var(--text-muted);
+          margin-bottom: 6px;
+        }
 
-    .time-value {
-      font-size: 1.35rem;
-      font-weight: 600;
-    }
+        .time-value {
+          font-size: 1.35rem;
+          font-weight: 600;
+        }
 
-    .date-value {
-      margin-top: 4px;
-      font-size: 0.9rem;
-      color: #cbd5f5;
-    }
+        .date-value {
+          margin-top: 4px;
+          font-size: 0.9rem;
+          color: #cbd5f5;
+        }
 
-    .content-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 2fr) minmax(0, 1.4fr);
-      gap: 18px;
-      margin-top: 20px;
-    }
+        .content-grid {
+          display: grid;
+          grid-template-columns: minmax(0, 2fr) minmax(0, 1.4fr);
+          gap: 18px;
+          margin-top: 20px;
+        }
 
-    .panel {
-      padding: 14px 14px 16px;
-      border-radius: 20px;
-      background: rgba(15, 23, 42, 0.94);
-      border: 1px solid var(--border-subtle);
-    }
+        .panel {
+          padding: 14px 14px 16px;
+          border-radius: 20px;
+          background: rgba(15, 23, 42, 0.94);
+          border: 1px solid var(--border-subtle);
+        }
 
-    .panel-title {
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--text-muted);
-      margin-bottom: 8px;
-    }
+        .panel-title {
+          font-size: 0.85rem;
+          text-transform: uppercase;
+          letter-spacing: 0.14em;
+          color: var(--text-muted);
+          margin-bottom: 8px;
+        }
 
-    .panel-main {
-      font-size: 0.96rem;
-      line-height: 1.5;
-    }
+        .panel-main {
+          font-size: 0.96rem;
+          line-height: 1.5;
+        }
 
-    .chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 10px;
-    }
+        .chips {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          margin-top: 10px;
+        }
 
-    .chip {
-      font-size: 0.78rem;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: var(--chip-bg);
-      border: 1px solid rgba(51, 65, 85, 0.9);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--text-muted);
-      white-space: nowrap;
-    }
+        .chip {
+          font-size: 0.78rem;
+          padding: 4px 10px;
+          border-radius: 999px;
+          background: var(--chip-bg);
+          border: 1px solid rgba(51, 65, 85, 0.9);
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          color: var(--text-muted);
+          white-space: nowrap;
+        }
 
-    .chip-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: #38bdf8;
-    }
+        .chip-dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 999px;
+          background: #38bdf8;
+        }
 
-    .hint {
-      margin-top: 12px;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+        .hint {
+          margin-top: 12px;
+          font-size: 0.8rem;
+          color: var(--text-muted);
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
 
-    .hint span.icon {
-      font-size: 1rem;
-    }
+        .hint span.icon {
+          font-size: 1rem;
+        }
 
-    .footer {
-      margin-top: 18px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
+        nav-grid {
+          margin-top: 22px;
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+          gap: 12px;
+        }
 
-    .footer-left {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+        .nav-button {
+          text-decoration: none;
+          padding: 14px 16px;
+          border-radius: 18px;
+          background: rgba(79, 70, 229, 0.15);
+          border: 1px solid rgba(79, 70, 229, 0.35);
+          color: var(--text);
+          font-weight: 500;
+          letter-spacing: 0.02em;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          transition: transform 0.2s ease, background 0.2s ease, border 0.2s ease;
+        }
 
-    .footer-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: #22c55e;
-    }
+        .nav-button span {
+          font-size: 0.85rem;
+          color: var(--text-muted);
+          font-weight: 400;
+        }
 
-    .quote {
-      font-style: italic;
-      text-align: right;
-      color: #e5e7eb;
-    }
+        .nav-button:hover {
+          transform: translateY(-2px);
+          background: rgba(79, 70, 229, 0.25);
+          border-color: rgba(99, 102, 241, 0.8);
+        }
 
-    @media (max-width: 640px) {
-      .card {
-        padding: 20px 18px;
-        border-radius: 22px;
-      }
+        .footer {
+          margin-top: 18px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 12px;
+          font-size: 0.8rem;
+          color: var(--text-muted);
+        }
 
-      .header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
+        .footer-left {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
 
-      .time-block {
-        text-align: left;
-        width: 100%;
-      }
+        .footer-dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 999px;
+          background: #22c55e;
+        }
 
-      .content-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
+        .quote {
+          font-style: italic;
+          text-align: right;
+          color: #e5e7eb;
+        }
 
-      .footer {
-        flex-direction: column;
-        align-items: flex-start;
-      }
+        @media (max-width: 640px) {
+          .card {
+            padding: 20px 18px;
+            border-radius: 22px;
+          }
 
-      .quote {
-        text-align: left;
-      }
-    }
-  </style>
+          .header {
+            flex-direction: column;
+            align-items: flex-start;
+          }
+
+          .time-block {
+            text-align: left;
+            width: 100%;
+          }
+
+          .content-grid {
+            grid-template-columns: minmax(0, 1fr);
+          }
+
+           .nav-grid {
+            grid-template-columns: minmax(0, 1fr);
+          }
+
+          .footer {
+            flex-direction: column;
+            align-items: flex-start;
+          }
+
+          .quote {
+            text-align: left;
+          }
+        }
+    </style>
 </head>
 <body>
 <div class="card">
-  <div class="card-inner">
-    <div class="header">
-      <div class="user-block">
-        <div class="badge">
-          <span class="badge-dot"></span>
-          Eingeloggt
-        </div>
-        <h1>
-          Willkommen zurück,
-          <span class="username" id="username-display">User</span>
-        </h1>
-        <p id="greeting-text">Schön, dass du da bist.</p>
-      </div>
-      <div class="time-block">
-        <div class="time-label">Aktuelle Uhrzeit</div>
-        <div class="time-value" id="time"></div>
-        <div class="date-value" id="date"></div>
-      </div>
-    </div>
-
-    <div class="content-grid">
-      <div class="panel">
-        <div class="panel-title">Heute</div>
-        <div class="panel-main">
-          <div id="day-info">Dein Tagesüberblick wird geladen …</div>
-          <div class="chips">
-            <div class="chip">
-              <span class="chip-dot"></span>
-              Session aktiv
+    <div class="card-inner">
+        <div class="header">
+            <div class="user-block">
+                <div class="badge">
+                    <span class="badge-dot"></span>
+                    Eingeloggt
+                </div>
+                <h1>
+                    Willkommen zurück,
+                    <span class="username" id="username-display">User</span>
+                </h1>
+                <p id="greeting-text">Schön, dass du da bist.</p>
             </div>
-            <div class="chip">
-              ⏱ Letztes Update: <span id="last-update">–</span>
+            <div class="time-block">
+                <div class="time-label">Aktuelle Uhrzeit</div>
+                <div class="time-value" id="time"></div>
+                <div class="date-value" id="date"></div>
             </div>
-            <div class="chip">
-              🌍 Zeitzone: <span id="timezone-label">–</span>
+        </div>
+
+        <div class="content-grid">
+            <div class="panel">
+                <div class="panel-title">Heute</div>
+                <div class="panel-main">
+                    <div id="day-info">Dein Tagesüberblick wird geladen …</div>
+                    <div class="chips">
+                        <div class="chip">
+                            <span class="chip-dot"></span>
+                            Session aktiv
+                        </div>
+                        <div class="chip">
+                            ⏱ Letztes Update: <span id="last-update">–</span>
+                        </div>
+                        <div class="chip">
+                            🌍 Zeitzone: <span id="timezone-label">–</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
 
-      <div class="panel">
-        <div class="panel-title">Kleiner Boost</div>
-        <div class="panel-main">
-          <div class="quote" id="quote">
-            Lade Motivation …
-          </div>
-          <div class="hint">
-            <span class="icon">💡</span>
-            <span>Diese Ansicht kannst du als minimalistisches Start-Dashboard nutzen.</span>
-          </div>
+            <div class="panel">
+                <div class="panel-title">Kleiner Boost</div>
+                <div class="panel-main">
+                    <div class="quote" id="quote">
+                        Lade Motivation …
+                    </div>
+                    <div class="hint">
+                        <span class="icon">💡</span>
+                        <span>Diese Ansicht kannst du als minimalistisches Start-Dashboard nutzen.</span>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
 
-    <div class="footer">
-      <div class="footer-left">
-        <span class="footer-dot"></span>
-        <span id="weekday-footer">–</span>
-      </div>
-      <div class="footer-right">
-        <span id="info-footer">Browser-Dashboard bereit.</span>
-      </div>
+        <div class="nav-grid">
+
+            <a class="nav-button" href="user-management.html">
+                Kunden
+                <span>Rollen & Rechte</span>
+            </a>
+            <a class="nav-button" href="article-management.html">
+                Artikel
+                <span>Stammdaten</span>
+            </a>
+            <a class="nav-button" href="supplier-management.html">
+                Lieferanten
+                <span>Übersicht & Pflege</span>
+            </a>
+            <a class="nav-button" href="purchase-order.html">
+                Bestellwesen
+                <span>Neue Bestellungen</span>
+            </a>
+            <a class="nav-button" href="order-management.html">
+                Kundenaufträge
+                <span>Aufträge pflegen</span>
+            </a>
+        </div>
+
+        <div class="footer">
+            <div class="footer-left">
+                <span class="footer-dot"></span>
+                <span id="weekday-footer">–</span>
+            </div>
+            <div class="footer-right">
+                <span id="info-footer">Browser-Dashboard bereit.</span>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <script>
-  // 🔧 HIER DEIN USERNAME
-  const username = "Nikolas"; // <- anpassen
+    const username = "Testbenutzer"
 
-  const usernameDisplay = document.getElementById("username-display");
-  const timeEl = document.getElementById("time");
-  const dateEl = document.getElementById("date");
-  const lastUpdateEl = document.getElementById("last-update");
-  const timezoneLabelEl = document.getElementById("timezone-label");
-  const dayInfoEl = document.getElementById("day-info");
-  const greetingTextEl = document.getElementById("greeting-text");
-  const weekdayFooterEl = document.getElementById("weekday-footer");
-  const infoFooterEl = document.getElementById("info-footer");
-  const quoteEl = document.getElementById("quote");
+    const usernameDisplay = document.getElementById("username-display");
+    const timeEl = document.getElementById("time");
+    const dateEl = document.getElementById("date");
+    const lastUpdateEl = document.getElementById("last-update");
+    const timezoneLabelEl = document.getElementById("timezone-label");
+    const dayInfoEl = document.getElementById("day-info");
+    const greetingTextEl = document.getElementById("greeting-text");
+    const weekdayFooterEl = document.getElementById("weekday-footer");
+    const infoFooterEl = document.getElementById("info-footer");
+    const quoteEl = document.getElementById("quote");
 
-  const quotes = [
-    "„Fang dort an, wo du bist. Nutz das, was du hast. Tu, was du kannst.“",
-    "„Kleine Schritte schlagen große Pläne, die nie gestartet werden.“",
-    "„Fokus ist die Superkraft unserer Zeit.“",
-    "„Heute ist ein guter Tag, um 1% besser zu werden.“",
-    "„Disziplin schlägt Motivation – aber beides zusammen ist unschlagbar.“"
-  ];
+    const quotes = [
+      "„Fang dort an, wo du bist. Nutz das, was du hast. Tu, was du kannst.“",
+      "„Kleine Schritte schlagen große Pläne, die nie gestartet werden.“",
+      "„Fokus ist die Superkraft unserer Zeit.“",
+      "„Heute ist ein guter Tag, um 1% besser zu werden.“",
+      "„Disziplin schlägt Motivation – aber beides zusammen ist unschlagbar.“"
+    ];
 
-  function setUsername() {
-    usernameDisplay.textContent = username;
-  }
-
-  function updateClock() {
-    const now = new Date();
-
-    const time = now.toLocaleTimeString("de-DE", {
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit"
-    });
-
-    const date = now.toLocaleDateString("de-DE", {
-      weekday: "long",
-      day: "2-digit",
-      month: "long",
-      year: "numeric"
-    });
-
-    timeEl.textContent = time;
-    dateEl.textContent = date;
-
-    lastUpdateEl.textContent = now.toLocaleTimeString("de-DE", {
-      hour: "2-digit",
-      minute: "2-digit"
-    });
-
-    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "Lokale Zeitzone";
-    timezoneLabelEl.textContent = tz;
-
-    const weekday = now.toLocaleDateString("de-DE", { weekday: "long" });
-    weekdayFooterEl.textContent = `Heute ist ${weekday}.`;
-
-    // Dynamischer Tages-Text
-    const hours = now.getHours();
-    let mood;
-    if (hours < 6) {
-      mood = "Nachtschicht – hoffentlich mit Fokus und Ruhe.";
-    } else if (hours < 11) {
-      mood = "Perfekt für einen produktiven Start in den Tag.";
-    } else if (hours < 14) {
-      mood = "Ideale Zeit für konzentriertes Arbeiten.";
-    } else if (hours < 18) {
-      mood = "Nachmittags-Flow: Kleine Aufgaben fertig machen.";
-    } else {
-      mood = "Feierabend in Sicht – gute Zeit für einen Wrap-up.";
-    }
-    dayInfoEl.textContent = `Es ist ${weekday}. ${mood}`;
-
-    infoFooterEl.textContent = "Zeit & Datum werden automatisch aktualisiert.";
-  }
-
-  function setGreeting() {
-    const now = new Date();
-    const hours = now.getHours();
-    let greeting;
-
-    if (hours < 6) {
-      greeting = "Du bist früh dran – oder sehr spät noch wach. 👀";
-    } else if (hours < 11) {
-      greeting = "Guten Morgen! Zeit für einen starken Start.";
-    } else if (hours < 14) {
-      greeting = "Guten Mittag! Weiter geht's.";
-    } else if (hours < 18) {
-      greeting = "Guten Nachmittag! Noch ein bisschen was geht immer.";
-    } else {
-      greeting = "Guten Abend! Perfekt, um den Tag sauber abzuschließen.";
+    function setUsername() {
+      usernameDisplay.textContent = username;
     }
 
-    greetingTextEl.textContent = greeting;
-  }
+    function updateClock() {
+      const now = new Date();
 
-  function setRandomQuote() {
-    const rand = Math.floor(Math.random() * quotes.length);
-    quoteEl.textContent = quotes[rand];
-  }
+      const time = now.toLocaleTimeString("de-DE", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+      });
 
-  // Initial
-  setUsername();
-  setGreeting();
-  setRandomQuote();
-  updateClock();
+      const date = now.toLocaleDateString("de-DE", {
+        weekday: "long",
+        day: "2-digit",
+        month: "long",
+        year: "numeric"
+      });
 
-  // Live-Update jede Sekunde
-  setInterval(updateClock, 1000);
-  // Zitat alle paar Minuten neu, falls Seite offen bleibt
-  setInterval(setRandomQuote, 1000 * 60 * 5);
+      timeEl.textContent = time;
+      dateEl.textContent = date;
+
+      lastUpdateEl.textContent = now.toLocaleTimeString("de-DE", {
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "Lokale Zeitzone";
+      timezoneLabelEl.textContent = tz;
+
+      const weekday = now.toLocaleDateString("de-DE", { weekday: "long" });
+      weekdayFooterEl.textContent = `Heute ist ${weekday}.`;
+
+      // Dynamischer Tages-Text
+      const hours = now.getHours();
+      let mood;
+      if (hours < 6) {
+        mood = "Nachtschicht – hoffentlich mit Fokus und Ruhe.";
+      } else if (hours < 11) {
+        mood = "Perfekt für einen produktiven Start in den Tag.";
+      } else if (hours < 14) {
+        mood = "Ideale Zeit für konzentriertes Arbeiten.";
+      } else if (hours < 18) {
+        mood = "Nachmittags-Flow: Kleine Aufgaben fertig machen.";
+      } else {
+        mood = "Feierabend in Sicht – gute Zeit für einen Wrap-up.";
+      }
+      dayInfoEl.textContent = `Es ist ${weekday}. ${mood}`;
+
+      infoFooterEl.textContent = "Zeit & Datum werden automatisch aktualisiert.";
+    }
+
+    function setGreeting() {
+      const now = new Date();
+      const hours = now.getHours();
+      let greeting;
+
+      if (hours < 6) {
+        greeting = "Du bist früh dran – oder sehr spät noch wach. 👀";
+      } else if (hours < 11) {
+        greeting = "Guten Morgen! Zeit für einen starken Start.";
+      } else if (hours < 14) {
+        greeting = "Guten Mittag! Weiter geht's.";
+      } else if (hours < 18) {
+        greeting = "Guten Nachmittag! Noch ein bisschen was geht immer.";
+      } else {
+        greeting = "Guten Abend! Perfekt, um den Tag sauber abzuschließen.";
+      }
+
+      greetingTextEl.textContent = greeting;
+    }
+
+    function setRandomQuote() {
+      const rand = Math.floor(Math.random() * quotes.length);
+      quoteEl.textContent = quotes[rand];
+    }
+
+    // Initial
+    setUsername();
+    setGreeting();
+    setRandomQuote();
+    updateClock();
+
+    // Live-Update jede Sekunde
+    setInterval(updateClock, 1000);
+    // Zitat alle paar Minuten neu, falls Seite offen bleibt
+    setInterval(setRandomQuote, 1000 * 60 * 5);
 </script>
 </body>
 </html>

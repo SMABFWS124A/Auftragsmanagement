@@ -2,77 +2,97 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kundenauftragsverwaltung</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<div class="page-shell">
+    <header class="navbar">
+        <div class="nav-links">
+            <a href="index.html" class="brand">Auftragscockpit</a>
+            <a href="user-management.html">Kunden</a>
+            <a href="article-management.html">Artikel</a>
+            <a href="supplier-management.html">Lieferanten</a>
+            <a href="purchase-order.html">Bestellwesen</a>
+            <a href="order-management.html" class="active">Kundenaufträge</a>
+        </div>
+    </header>
 
-<div class="navbar">
-    <div class="nav-links">
-        <a href="index.html" class="brand">Startseite</a>
-        <a href="user-management.html">Kunden</a>
-        <a href="article-management.html">Artikel</a>
-        <a href="supplier-management.html">Lieferanten</a>
-        <a href="purchase-order.html">Bestellwesen</a>
-        <a href="order-management.html" class="active">Kundenaufträge</a>
-    </div>
-</div>
+    <div class="container">
+        <section class="page-header">
+            <p class="eyebrow">Vertrieb & Lieferung</p>
+            <h1>Kundenaufträge & Verkauf</h1>
+            <p>Erfasse neue Aufträge, plane Positionen und halte Statusupdates für das gesamte Team sichtbar.</p>
+            <div class="page-actions">
+                <span class="pill success">Pipeline offen</span>
+                <span class="pill neutral">Realtime Monitoring</span>
+            </div>
+        </section>
 
-<div class="container">
-
-    <h1>Kundenaufträge & Verkauf</h1>
-
-    <div class="main-content">
-
-        <div class="left-panel">
-            <h2>Neuen Auftrag erfassen</h2>
-
-            <form id="createOrderForm">
-
-                <p>
-                    <label for="customerSelect">Kunde auswählen:</label>
-                    <select id="customerSelect" required>
-                        <option value="" disabled selected>Bitte Kunde wählen</option>
-                    </select>
-                </p>
-
-                <h3>Positionen</h3>
-                <div id="itemsContainer">
-                </div>
-
-                <p>
-                    <button type="button" id="addItemButton">➕ Position hinzufügen</button>
-                </p>
-
-                <p style="margin-top: 20px;">
-                    <button type="submit" id="submitOrderButton">Auftrag speichern & berechnen</button>
-                </p>
-            </form>
-            <p id="message"></p>
+        <div class="status-grid">
+            <div class="status-card">
+                <h3>Auftragserfassung</h3>
+                <p>Kunden auswählen, Positionen ergänzen, fertig.</p>
+            </div>
+            <div class="status-card">
+                <h3>Margenblick</h3>
+                <p>Summen & Beträge werden automatisch kalkuliert.</p>
+            </div>
+            <div class="status-card">
+                <h3>Delivery State</h3>
+                <p>Status aktualisieren, sobald der Versand erfolgt ist.</p>
+            </div>
         </div>
 
-        <div class="right-panel">
-            <h2>Offene & abgeschlossene Aufträge</h2>
-            <table id="orderTable">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Kunde</th>
-                    <th>Datum</th>
-                    <th>Betrag (€)</th>
-                    <th>Status</th>
-                    <th>Aktionen</th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+        <div class="hint-banner">🚀 Insight: Nutze die Tabelle, um Bestellungen direkt zu liefern oder zu löschen.</div>
+
+        <div class="main-content">
+            <div class="left-panel">
+                <h2>Neuen Auftrag erfassen</h2>
+
+                <form id="createOrderForm">
+                    <p>
+                        <label for="customerSelect">Kunde auswählen:</label>
+                        <select id="customerSelect" required>
+                            <option value="" disabled selected>Bitte Kunde wählen</option>
+                        </select>
+                    </p>
+
+                    <h3>Positionen</h3>
+                    <div id="itemsContainer"></div>
+
+                    <p>
+                        <button type="button" id="addItemButton">➕ Position hinzufügen</button>
+                    </p>
+
+                    <p style="margin-top: 20px;">
+                        <button type="submit" id="submitOrderButton">Auftrag speichern & berechnen</button>
+                    </p>
+                </form>
+                <p id="message"></p>
+            </div>
+
+            <div class="right-panel">
+                <h2>Offene & abgeschlossene Aufträge</h2>
+                <table id="orderTable">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Kunde</th>
+                        <th>Datum</th>
+                        <th>Betrag (€)</th>
+                        <th>Status</th>
+                        <th>Aktionen</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
         </div>
-
     </div>
-
 </div>
-
 <script src="order.js"></script>
 </body>
 </html>

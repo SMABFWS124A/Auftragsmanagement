@@ -2,71 +2,97 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>User-Verwaltung Frontend</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kundenverwaltung</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<div class="page-shell">
+    <header class="navbar">
+        <div class="nav-links">
+            <a href="index.html" class="brand">Auftragscockpit</a>
+            <a href="user-management.html" class="active">Kunden</a>
+            <a href="article-management.html">Artikel</a>
+            <a href="supplier-management.html">Lieferanten</a>
+            <a href="purchase-order.html">Bestellwesen</a>
+            <a href="order-management.html">Kundenaufträge</a>
+        </div>
+    </header>
 
-<div class="navbar">
-    <div class="nav-links">
-        <a href="index.html" class="brand">Startseite</a>
-        <a href="user-management.html" class="active">Kunden</a>
-        <a href="article-management.html">Artikel</a>
-        <a href="supplier-management.html">Lieferanten</a>
-        <a href="purchase-order.html">Bestellwesen</a>
-        <a href="order-management.html">Kundenaufträge</a>
-    </div>
-</div>
+    <div class="container">
+        <section class="page-header">
+            <p class="eyebrow">CRM & Beziehungen</p>
+            <h1>Kundenübersicht</h1>
+            <p>Pflege Kundendaten, aktualisiere Stammdaten und halte deine Vertriebspipeline transparent.</p>
+            <div class="page-actions">
+                <span class="pill success">Live-Daten</span>
+                <span class="pill neutral">Letzte Sync &lt; 1 Min.</span>
+            </div>
+        </section>
 
-<div class="container">
-
-    <h1>Kunden</h1>
-
-    <div class="main-content">
-
-        <div class="left-panel">
-            <div id="userForm">
-                <h2><span id="formTitle">Neuen Kunden anlegen</span></h2>
-                <form id="createUpdateForm">
-                    <input type="hidden" id="userId" name="id" value="">
-
-                    <p>
-                        <label for="firstName">Vorname:</label>
-                        <input type="text" id="firstName" required>
-                    </p>
-                    <p>
-                        <label for="lastName">Nachname:</label>
-                        <input type="text" id="lastName" required>
-                    </p>
-                    <p>
-                        <label for="email">E-Mail:</label>
-                        <input type="email" id="email" required>
-                    </p>
-
-                    <button type="submit" id="submitButton">Kunde speichern</button>
-                    <button type="button" id="cancelButton" style="display: none;">Abbrechen</button>
-                </form>
-                <p id="message"></p>
+        <div class="status-grid">
+            <div class="status-card">
+                <h3>Neukunden</h3>
+                <p>Nutze das Formular, um neue Leads blitzschnell anzulegen.</p>
+            </div>
+            <div class="status-card">
+                <h3>Stammdatenpflege</h3>
+                <p>Bearbeite Kund*innen direkt in der Tabelle mit einem Klick.</p>
+            </div>
+            <div class="status-card">
+                <h3>Transparenz</h3>
+                <p>Alle Änderungen sind sofort für die Auftrags-Teams sichtbar.</p>
             </div>
         </div>
 
-        <div class="right-panel">
-            <h2>Alle Kund*innen</h2>
-            <table id="userTable">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Vorname</th>
-                    <th>Nachname</th>
-                    <th>E-Mail</th>
-                    <th>Aktionen</th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
+        <div class="hint-banner">✨ Tipp: Doppelklicke auf bestehende Kund*innen, um Daten schnell zu bearbeiten.</div>
 
-    </div> </div> <script src="user.js"></script>
+        <div class="main-content">
+            <div class="left-panel">
+                <div id="userForm">
+                    <h2><span id="formTitle">Neuen Kunden anlegen</span></h2>
+                    <form id="createUpdateForm">
+                        <input type="hidden" id="userId" name="id" value="">
+
+                        <p>
+                            <label for="firstName">Vorname:</label>
+                            <input type="text" id="firstName" required>
+                        </p>
+                        <p>
+                            <label for="lastName">Nachname:</label>
+                            <input type="text" id="lastName" required>
+                        </p>
+                        <p>
+                            <label for="email">E-Mail:</label>
+                            <input type="email" id="email" required>
+                        </p>
+
+                        <button type="submit" id="submitButton">Kunde speichern</button>
+                        <button type="button" id="cancelButton" style="display: none;">Abbrechen</button>
+                    </form>
+                    <p id="message"></p>
+                </div>
+            </div>
+
+            <div class="right-panel">
+                <h2>Alle Kund*innen</h2>
+                <table id="userTable">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Vorname</th>
+                        <th>Nachname</th>
+                        <th>E-Mail</th>
+                        <th>Aktionen</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="user.js"></script>
 </body>
 </html>
