@@ -8,18 +8,18 @@ import org.springframework.stereotype.Component;
 public class ArticleMapper {
 
     public ArticleDto toDto(Article entity) {
-        return new ArticleDto(
-                entity.getId(),
-                entity.getArticleNumber(),
-                entity.getArticleName(),
-                entity.getPurchasePrice(),
-                entity.getSalesPrice(),
-                entity.getCategory(),
-                entity.getInventory(),
-                entity.isActive(),
-                entity.getCreationDate(),
-                entity.getDescription()
-        );
+        return ArticleDto.builder()
+                .id(entity.getId())
+                .articleNumber(entity.getArticleNumber())
+                .articleName(entity.getArticleName())
+                .purchasePrice(entity.getPurchasePrice())
+                .salesPrice(entity.getSalesPrice())
+                .category(entity.getCategory())
+                .inventory(entity.getInventory())
+                .active(entity.isActive())
+                .creationDate(entity.getCreationDate())
+                .description(entity.getDescription())
+                .build();
     }
 
     public Article toEntity (ArticleDto dto){

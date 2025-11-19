@@ -186,7 +186,7 @@ function showMessage(text, type) {
 
 function showSupplierDetails(supplier) {
     const detailsContent = `
-        <h3>Details für ${supplier.name} (ID: ${supplier.id})</h3>
+        <h3>Details für: ${supplier.name} (ID: ${supplier.id})</h3>
         <hr>
         <p><strong>Name der Firma:</strong> ${supplier.name}</p>
         <p><strong>Ansprechpartner:</strong> ${supplier.contactPerson || 'N/A'}</p>

@@ -49,11 +49,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private OrderItemDto mapItemToDto(OrderItem item) {
-        return new OrderItemDto(
-                item.getArticle().getId(),
-                item.getQuantity(),
-                item.getUnitPrice()
-        );
+        return OrderItemDto.builder()
+                .articleId(item.getArticle().getId())
+                .quantity(item.getQuantity())
+                .unitPrice(item.getUnitPrice())
+                .build();
     }
 
     private OrderDto mapToDto(Order entity) {
@@ -63,14 +63,14 @@ public class OrderServiceImpl implements OrderService {
                 .collect(Collectors.toList())
                 : List.of();
 
-        return new OrderDto(
-                entity.getId(),
-                entity.getCustomer().getId(),
-                entity.getOrderDate(),
-                entity.getStatus(),
-                entity.getTotalAmount(),
-                itemDtos
-        );
+        return OrderDto.builder()
+                .id(entity.getId())
+                .customerId(entity.getCustomer().getId())
+                .orderDate(entity.getOrderDate())
+                .status(entity.getStatus())
+                .totalAmount(entity.getTotalAmount())
+                .items(itemDtos)
+                .build();
     }
 
     @Override

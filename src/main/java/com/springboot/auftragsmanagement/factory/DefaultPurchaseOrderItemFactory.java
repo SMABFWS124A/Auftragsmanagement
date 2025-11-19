@@ -8,6 +8,10 @@ public class DefaultPurchaseOrderItemFactory implements PurchaseOrderItemFactory
 
     @Override
     public PurchaseOrderItemDto createPurchaseOrderItem(Long articleId, int quantity, Double unitPrice) {
-        return new PurchaseOrderItemDto(articleId, quantity, unitPrice);
+        return PurchaseOrderItemDto.builder()
+                .articleId(articleId)
+                .quantity(quantity)
+                .unitPrice(unitPrice)
+                .build();
     }
 }

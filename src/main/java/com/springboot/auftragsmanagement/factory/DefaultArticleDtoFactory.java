@@ -8,6 +8,17 @@ public class DefaultArticleDtoFactory implements ArticleDtoFactory {
     @Override
     public ArticleDto createArticle(Long id, String articleNumber, String articleName, double purchasePrice, double salesPrice,
                                     String category, int inventory, boolean active, LocalDateTime creationDate, String description) {
-        return new ArticleDto(id, articleNumber, articleName, purchasePrice, salesPrice, category, inventory, active, creationDate, description);
+        return ArticleDto.builder()
+                .id(id)
+                .articleNumber(articleNumber)
+                .articleName(articleName)
+                .purchasePrice(purchasePrice)
+                .salesPrice(salesPrice)
+                .category(category)
+                .inventory(inventory)
+                .active(active)
+                .creationDate(creationDate)
+                .description(description)
+                .build();
     }
 }

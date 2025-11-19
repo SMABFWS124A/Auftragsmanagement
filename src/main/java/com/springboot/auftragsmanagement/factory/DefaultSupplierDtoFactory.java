@@ -30,7 +30,14 @@ public class DefaultSupplierDtoFactory implements SupplierDtoFactory {
         dto.setEmail(entity.getEmail());
         dto.setPhone(entity.getPhone());
         dto.setAddress(entity.getAddress());
-        return dto;
+        return SupplierDto.builder()
+                .id(entity.getId())
+                .name(entity.getName())
+                .contactPerson(entity.getContactPerson())
+                .email(entity.getEmail())
+                .phone(entity.getPhone())
+                .address(entity.getAddress())
+                .build();
     }
 
     @Override

@@ -1,11 +1,40 @@
 package com.springboot.auftragsmanagement.dto;
 
-/**
- * DTO für ein einzelnes Bestellelement.
- * Wird als Record implementiert, da es eine einfache, unveränderliche (immutable) Datenklasse ist.
- */
 public record OrderItemDto(
         Long articleId,
-        Integer quantity,
+        int quantity,
         Double unitPrice
-) {}
+) {
+
+public static Builder builder() {
+    return new Builder();
+}
+
+public static final class Builder {
+    private Long articleId;
+    private int quantity;
+    private Double unitPrice;
+
+    private Builder() {
+    }
+
+    public Builder articleId(Long articleId) {
+        this.articleId = articleId;
+        return this;
+    }
+
+    public Builder quantity(int quantity) {
+        this.quantity = quantity;
+        return this;
+    }
+
+    public Builder unitPrice(Double unitPrice) {
+        this.unitPrice = unitPrice;
+        return this;
+    }
+
+    public OrderItemDto build() {
+        return new OrderItemDto(articleId, quantity, unitPrice);
+    }
+}
+}

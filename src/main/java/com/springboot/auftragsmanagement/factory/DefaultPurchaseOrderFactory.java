@@ -20,14 +20,14 @@ public class DefaultPurchaseOrderFactory implements PurchaseOrderFactory {
             double totalAmount,
             List<PurchaseOrderItemDto> items
     ) {
-        return new PurchaseOrderDto(
-                orderId,
-                supplierId,
-                supplierName,
-                orderDate,
-                status,
-                totalAmount,
-                items
-        );
+        return PurchaseOrderDto.builder()
+                .id(orderId)
+                .supplierId(supplierId)
+                .supplierName(supplierName)
+                .orderDate(orderDate)
+                .status(status)
+                .totalAmount(totalAmount)
+                .items(items)
+                .build();
     }
 }
