@@ -4,11 +4,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record PurchaseOrderDto(
-        Long id,
+        Long orderId,
         Long supplierId,
-        String supplierName,
-        LocalDateTime orderDate,
+        String supplierName, // <-- gehört zur Lieferantenbestellung
+        LocalDateTime orderDate, // <-- gehört zur Lieferantenbestellung
         String status,
-        Double totalAmount,
+        double totalAmount,
         List<PurchaseOrderItemDto> items
 ) {}

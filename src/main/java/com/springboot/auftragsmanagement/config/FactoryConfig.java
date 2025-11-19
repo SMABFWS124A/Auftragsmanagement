@@ -13,6 +13,11 @@ public class FactoryConfig {
     }
 
     @Bean
+    public PurchaseOrderItemFactory purchaseOrderItemFactory() {
+        return new DefaultPurchaseOrderItemFactory();
+    }
+
+    @Bean
     public ArticleDtoFactory articleDtoFactory() {
         return new DefaultArticleDtoFactory();
     }

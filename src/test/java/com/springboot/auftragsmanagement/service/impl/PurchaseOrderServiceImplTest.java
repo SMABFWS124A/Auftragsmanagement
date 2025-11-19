@@ -17,6 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -30,29 +31,35 @@ import static org.mockito.Mockito.*;
 class PurchaseOrderServiceImplTest {
 
     @Mock private PurchaseOrderRepository orderRepository;
-    @Mock private SupplierRepository supplierRepository; // Neu: SupplierRepository statt SupplierService/NullSupplier
+    @Mock private SupplierRepository supplierRepository;
     @Mock private ArticleRepository articleRepository;
     @Mock private ArticleService articleService;
 
     @InjectMocks private PurchaseOrderServiceImpl purchaseOrderService;
+
+    private static final LocalDateTime TEST_DATE = LocalDateTime.of(2025, 1, 1, 10, 0);
+    private static final String TEST_SUPPLIER_NAME = "Test Supplier";
 
     // Entspricht PurchaseOrderItemDto(Long articleId, int quantity, double unitPrice)
     private PurchaseOrderItemDto createPurchaseItemDto(Long articleId, int quantity, double unitPrice) {
         return new PurchaseOrderItemDto(articleId, quantity, unitPrice);
     }
 
-    // Entspricht PurchaseOrderDto(Long id, Long supplierId, String status, Double totalAmount, List<PurchaseOrderItemDto> items)
-    private PurchaseOrderDto createPurchaseOrderDto(Long id, Long supplierId, String status, Double totalAmount, List<PurchaseOrderItemDto> items) {
-        return new PurchaseOrderDto(id, supplierId, status, totalAmount, items);
+    /**
+     * KORRIGIERT: verwendet orderId anstelle von id.
+     * PurchaseOrderDto(Long orderId, Long supplierId, String supplierName, LocalDateTime orderDate, String status, double totalAmount, List<PurchaseOrderItemDto> items)
+     */
+    private PurchaseOrderDto createPurchaseOrderDto(Long orderId, Long supplierId, String status, Double totalAmount, List<PurchaseOrderItemDto> items) {
+        return new PurchaseOrderDto(orderId, supplierId, TEST_SUPPLIER_NAME, TEST_DATE, status, totalAmount, items);
     }
 
-    // Helfer zur Erstellung einer minimalen PurchaseOrder Entity.
     private PurchaseOrder createTestPurchaseOrderEntity(Long id, String status, Supplier supplier, double totalAmount) {
         PurchaseOrder order = new PurchaseOrder();
         order.setId(id);
         order.setSupplier(supplier);
         order.setStatus(status);
         order.setTotalAmount(totalAmount);
+        order.setOrderDate(TEST_DATE);
         order.setItems(Collections.emptyList());
         return order;
     }
@@ -81,6 +88,12 @@ class PurchaseOrderServiceImplTest {
         article.setId(articleId);
 
         PurchaseOrder savedOrder = createTestPurchaseOrderEntity(10L, "BESTELLT", supplier, expectedTotal);
+        PurchaseOrderItem savedItem = new PurchaseOrderItem();
+        savedItem.setArticle(article);
+        savedItem.setQuantity(quantity);
+        savedItem.setUnitPrice(unitPrice);
+        savedOrder.setItems(List.of(savedItem));
+
 
         when(supplierRepository.findById(supplierId)).thenReturn(Optional.of(supplier));
         when(articleRepository.findById(articleId)).thenReturn(Optional.of(article));
@@ -91,9 +104,10 @@ class PurchaseOrderServiceImplTest {
 
         // Assert
         assertNotNull(result);
-        assertEquals(10L, result.id());
+        assertEquals(10L, result.orderId()); // KORREKTUR: result.orderId() statt result.id()
         assertEquals(expectedTotal, result.totalAmount(), 0.001);
         assertEquals("BESTELLT", result.status());
+        assertEquals(TEST_DATE, result.orderDate());
         verify(supplierRepository).findById(supplierId);
         verify(articleRepository).findById(articleId);
         verify(orderRepository).save(any(PurchaseOrder.class));
@@ -118,7 +132,10 @@ class PurchaseOrderServiceImplTest {
         PurchaseOrderItemDto itemDto = createPurchaseItemDto(articleId, 1, 1.0);
         PurchaseOrderDto inputDto = createPurchaseOrderDto(null, supplierId, "NEU", 0.0, List.of(itemDto));
 
-        when(supplierRepository.findById(supplierId)).thenReturn(Optional.of(new Supplier()));
+        Supplier supplier = new Supplier();
+        supplier.setId(supplierId);
+
+        when(supplierRepository.findById(supplierId)).thenReturn(Optional.of(supplier));
         when(articleRepository.findById(articleId)).thenReturn(Optional.empty());
 
         assertThrows(ResourceNotFoundException.class, () -> purchaseOrderService.createOrder(inputDto));
@@ -150,11 +167,11 @@ class PurchaseOrderServiceImplTest {
         when(orderRepository.save(any(PurchaseOrder.class))).thenReturn(order);
 
         // Act
-        purchaseOrderService.receiveOrder(orderId);
+        PurchaseOrderDto result = purchaseOrderService.receiveOrder(orderId);
 
         // Assert
         assertEquals("GELIEFERT", order.getStatus());
-        // Bestandserhöhung (positive Menge)
+        assertEquals("GELIEFERT", result.status());
         verify(articleService).updateInventory(articleId, quantity);
         verify(orderRepository).save(order);
     }
@@ -195,7 +212,7 @@ class PurchaseOrderServiceImplTest {
         PurchaseOrderDto result = purchaseOrderService.getOrderById(orderId);
 
         assertNotNull(result);
-        assertEquals(orderId, result.id());
+        assertEquals(orderId, result.orderId()); // KORREKTUR: result.orderId() statt result.id()
         assertEquals(10L, result.supplierId());
     }
 
@@ -225,7 +242,7 @@ class PurchaseOrderServiceImplTest {
 
         assertNotNull(result);
         assertEquals(2, result.size());
-        assertEquals(1L, result.get(0).id());
+        assertEquals(1L, result.get(0).orderId()); // KORREKTUR: result.get(0).orderId() statt result.get(0).id()
         assertEquals("GELIEFERT", result.get(1).status());
         verify(orderRepository).findAll();
     }
