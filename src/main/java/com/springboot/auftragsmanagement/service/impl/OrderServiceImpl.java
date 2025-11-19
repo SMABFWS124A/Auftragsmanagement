@@ -19,6 +19,8 @@ import com.springboot.auftragsmanagement.service.ArticleService;
 import com.springboot.auftragsmanagement.service.OrderService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.springboot.auftragsmanagement.strategy.OrderPricingStrategyResolver;
+import com.springboot.auftragsmanagement.event.OrderEventPublisher;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,23 +31,20 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
     private final ArticleRepository articleRepository;
-    private final ArticleService articleService;
-    private final PurchaseOrderFactory purchaseOrderFactory;
-    private final PurchaseOrderItemFactory purchaseOrderItemFactory;
+    private final OrderPricingStrategyResolver orderPricingStrategyResolver;
+    private final OrderEventPublisher orderEventPublisher;
 
     public OrderServiceImpl(
             OrderRepository orderRepository,
             UserRepository userRepository,
             ArticleRepository articleRepository,
-            ArticleService articleService,
-            PurchaseOrderFactory purchaseOrderFactory,
-            PurchaseOrderItemFactory purchaseOrderItemFactory) {
+            OrderPricingStrategyResolver orderPricingStrategyResolver,
+            OrderEventPublisher orderEventPublisher) {
         this.orderRepository = orderRepository;
         this.userRepository = userRepository;
         this.articleRepository = articleRepository;
-        this.articleService = articleService;
-        this.purchaseOrderFactory = purchaseOrderFactory;
-        this.purchaseOrderItemFactory = purchaseOrderItemFactory;
+        this.orderPricingStrategyResolver = orderPricingStrategyResolver;
+        this.orderEventPublisher = orderEventPublisher;
     }
 
     private OrderItemDto mapItemToDto(OrderItem item) {
@@ -96,14 +95,12 @@ public class OrderServiceImpl implements OrderService {
             return item;
         }).toList();
 
-        double calculatedTotal = items.stream()
-                .mapToDouble(item -> item.getQuantity() * item.getUnitPrice())
-                .sum();
 
         order.setItems(items);
-        order.setTotalAmount(calculatedTotal);
+        order.setTotalAmount(orderPricingStrategyResolver.calculateTotal(orderDto));
 
         Order savedOrder = orderRepository.save(order);
+        orderEventPublisher.publishOrderCreated(savedOrder);
 
         return mapToDto(savedOrder);
     }
@@ -125,12 +122,9 @@ public class OrderServiceImpl implements OrderService {
             throw new IllegalArgumentException("Der Auftrag mit ID " + orderId + " wurde bereits geliefert.");
         }
 
-        for (OrderItem item : order.getItems()) {
-            articleService.updateInventory(item.getArticle().getId(), -item.getQuantity());
-        }
-
         order.setStatus("GELIEFERT");
         Order savedOrder = orderRepository.save(order);
+        orderEventPublisher.publishOrderDelivered(savedOrder);
 
         return mapToDto(savedOrder);
     }

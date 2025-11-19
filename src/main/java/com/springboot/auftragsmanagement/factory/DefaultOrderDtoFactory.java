@@ -18,15 +18,11 @@ public class DefaultOrderDtoFactory implements OrderDtoFactory {
     private final OrderItemDtoFactory orderItemDtoFactory;
     private final UserRepository userRepository;
 
-    // Repositories und andere Factories werden injiziert
     public DefaultOrderDtoFactory(OrderItemDtoFactory orderItemDtoFactory, UserRepository userRepository) {
         this.orderItemDtoFactory = orderItemDtoFactory;
         this.userRepository = userRepository;
     }
 
-    /**
-     * Implementiert das einfache Factory-Muster: Direkter Record-Konstruktor-Aufruf.
-     */
     @Override
     public OrderDto createOrder(
             Long id,
@@ -39,9 +35,7 @@ public class DefaultOrderDtoFactory implements OrderDtoFactory {
         return new OrderDto(id, customerId, orderDate, status, totalAmount, items);
     }
 
-    /**
-     * Implementierung der Konvertierungsmethode (delegiert Item-Konvertierung).
-     */
+
     @Override
     public OrderDto createOrderDto(Order entity) {
         List<OrderItemDto> itemDtos = orderItemDtoFactory.createOrderItemDtos(entity.getItems());
@@ -63,7 +57,6 @@ public class DefaultOrderDtoFactory implements OrderDtoFactory {
     public Order createOrderEntity(OrderDto dto) {
         Order entity = new Order();
 
-        // Setze ID und Kunde
         if (dto.id() != null) {
             entity.setId(dto.id());
         }
@@ -72,12 +65,10 @@ public class DefaultOrderDtoFactory implements OrderDtoFactory {
                 .orElseThrow(() -> new EntityNotFoundException("Customer not found with id: " + dto.customerId()));
         entity.setCustomer(customer);
 
-        // Setze die übrigen Felder
         entity.setOrderDate(dto.orderDate() != null ? dto.orderDate() : LocalDateTime.now());
         entity.setStatus(dto.status());
         entity.setTotalAmount(dto.totalAmount() != null ? dto.totalAmount() : 0.0);
 
-        // Setze Items (delegiert Entity-Erstellung an Item Factory)
         if (dto.items() != null) {
             entity.setItems(
                     dto.items().stream()
