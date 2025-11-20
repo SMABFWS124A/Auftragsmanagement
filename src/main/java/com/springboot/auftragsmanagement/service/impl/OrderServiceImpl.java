@@ -20,6 +20,9 @@ import com.springboot.auftragsmanagement.service.OrderService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.springboot.auftragsmanagement.strategy.OrderPricingStrategyResolver;
+import com.springboot.auftragsmanagement.service.workflow.OrderDeliveryWorkflow;
+import com.springboot.auftragsmanagement.service.workflow.OrderWorkflowTemplate;
+import com.springboot.auftragsmanagement.service.workflow.OrderWorkflowTemplateDependencies;
 import com.springboot.auftragsmanagement.event.OrderEventPublisher;
 
 import java.util.List;
@@ -33,6 +36,8 @@ public class OrderServiceImpl implements OrderService {
     private final ArticleRepository articleRepository;
     private final OrderPricingStrategyResolver orderPricingStrategyResolver;
     private final OrderEventPublisher orderEventPublisher;
+    private final OrderWorkflowTemplate orderDeliveryWorkflow;
+
 
     public OrderServiceImpl(
             OrderRepository orderRepository,
@@ -45,6 +50,8 @@ public class OrderServiceImpl implements OrderService {
         this.articleRepository = articleRepository;
         this.orderPricingStrategyResolver = orderPricingStrategyResolver;
         this.orderEventPublisher = orderEventPublisher;
+        this.orderDeliveryWorkflow = new OrderDeliveryWorkflow(
+                new OrderWorkflowTemplateDependencies(orderRepository, orderEventPublisher));
     }
 
     private OrderItemDto mapItemToDto(OrderItem item) {
@@ -115,16 +122,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public OrderDto deliverOrder(Long orderId) {
-        Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new ResourceNotFoundException("Order", "id", orderId));
+        Order savedOrder = orderDeliveryWorkflow.execute(orderId);
 
-        if ("GELIEFERT".equals(order.getStatus())) {
-            throw new IllegalArgumentException("Der Auftrag mit ID " + orderId + " wurde bereits geliefert.");
-        }
-
-        order.setStatus("GELIEFERT");
-        Order savedOrder = orderRepository.save(order);
-        orderEventPublisher.publishOrderDelivered(savedOrder);
 
         return mapToDto(savedOrder);
     }
