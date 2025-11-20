@@ -1,5 +1,6 @@
 package com.springboot.auftragsmanagement.controller;
 
+import com.springboot.auftragsmanagement.exception.OrderValidationException;
 import com.springboot.auftragsmanagement.exception.ResourceNotFoundException;
 import com.springboot.auftragsmanagement.exception.StockExceededException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -46,6 +47,17 @@ public class GlobalExceptionHandler {
                 request.getDescription(false)
         );
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(OrderValidationException.class)
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> handleOrderValidationException(OrderValidationException ex, WebRequest request) {
+        Map<String, Object> body = createErrorBody(
+                HttpStatus.BAD_REQUEST,
+                ex.getMessage(),
+                request.getDescription(false)
+        );
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)

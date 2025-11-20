@@ -1,10 +1,9 @@
 package com.springboot.auftragsmanagement.facade;
 
 import com.springboot.auftragsmanagement.dto.OrderDto;
-import com.springboot.auftragsmanagement.dto.OrderItemDto;
-import com.springboot.auftragsmanagement.exception.StockExceededException;
 import com.springboot.auftragsmanagement.service.ArticleService;
 import com.springboot.auftragsmanagement.service.OrderService;
+import com.springboot.auftragsmanagement.validation.OrderValidationHandler;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,15 +14,18 @@ public class OrderFacade {
 
     private final OrderService orderService;
     private final ArticleService articleService;
+    private final OrderValidationHandler orderValidationHandler;
 
-    public OrderFacade(OrderService orderService, ArticleService articleService) {
+    public OrderFacade(OrderService orderService, ArticleService articleService,
+                       OrderValidationHandler orderValidationHandler) {
         this.orderService = orderService;
         this.articleService = articleService;
+        this.orderValidationHandler = orderValidationHandler;
     }
 
     @Transactional
     public OrderDto placeOrderWithInventoryUpdate(OrderDto orderDto) {
-        validateStock(orderDto.items());
+        orderValidationHandler.validate(orderDto);
 
         OrderDto savedOrder = orderService.createOrder(orderDto);
         orderDto.items().forEach(item -> articleService.updateInventory(item.articleId(), -item.quantity()));
@@ -41,17 +43,5 @@ public class OrderFacade {
 
     public void deleteDeliveredOrder(Long id) {
         orderService.deleteDeliveredOrder(id);
-    }
-
-    private void validateStock(List<OrderItemDto> items) {
-        for (OrderItemDto item : items) {
-            boolean available = articleService.checkStockLevel(item.articleId(), item.quantity());
-            if (!available) {
-                throw new StockExceededException(
-                        "Nicht genügend Bestand für Artikel mit ID " + item.articleId() +
-                                ". Benötigt: " + item.quantity()
-                );
-            }
-        }
     }
 }
