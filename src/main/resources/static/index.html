@@ -75,6 +75,18 @@
           flex-wrap: wrap;
         }
 
+        /* NEUES CSS FÜR DAS LOGO */
+        .user-logo {
+            width:665px; /* Größe des Logos */
+            height: 80px;
+            object-fit: contain;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            padding: 6px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid var(--border-subtle);
+        }
+
         .badge {
           display: inline-flex;
           align-items: center;
@@ -333,6 +345,8 @@
     <div class="card-inner">
         <div class="header">
             <div class="user-block">
+                <!-- HIER IST DAS NEUE LOGO -->
+                <img src="/logo.png" alt="Firmenlogo" class="user-logo">
                 <div class="badge">
                     <span class="badge-dot"></span>
                     Eingeloggt

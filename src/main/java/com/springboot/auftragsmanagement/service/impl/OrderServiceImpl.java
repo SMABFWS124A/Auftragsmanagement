@@ -89,12 +89,15 @@ public class OrderServiceImpl implements OrderService {
         order.setCustomer(customer);
         order.setStatus("NEU");
 
+        Order savedOrder = orderRepository.save(order);
+
+
         List<OrderItem> items = orderDto.items().stream().map(itemDto -> {
             Article article = articleRepository.findById(itemDto.articleId())
                     .orElseThrow(() -> new ResourceNotFoundException("Article", "id", itemDto.articleId()));
 
             OrderItem item = new OrderItem();
-            item.setOrder(order);
+            item.setOrder(savedOrder);
             item.setArticle(article);
             item.setQuantity(itemDto.quantity());
             item.setUnitPrice(itemDto.unitPrice());
@@ -103,13 +106,13 @@ public class OrderServiceImpl implements OrderService {
         }).toList();
 
 
-        order.setItems(items);
-        order.setTotalAmount(orderPricingStrategyResolver.calculateTotal(orderDto));
+        savedOrder.setItems(items);
+        savedOrder.setTotalAmount(orderPricingStrategyResolver.calculateTotal(orderDto));
 
-        Order savedOrder = orderRepository.save(order);
-        orderEventPublisher.publishOrderCreated(savedOrder);
+        Order persistedOrder = orderRepository.save(savedOrder);
+        orderEventPublisher.publishOrderCreated(persistedOrder);
 
-        return mapToDto(savedOrder);
+        return mapToDto(persistedOrder);
     }
 
     @Override

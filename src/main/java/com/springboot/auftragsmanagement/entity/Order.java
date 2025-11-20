@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "customer_orders")
+@Table(name = "orders")
 public class Order {
 
     @Id
@@ -16,8 +16,10 @@ public class Order {
     @JoinColumn(name = "customer_id", nullable = false)
     private User customer;
 
+    @Column(name = "order_date")
     private LocalDateTime orderDate;
     private String status;
+    @Column(name = "total_amount")
     private double totalAmount;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
