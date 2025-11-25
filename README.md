@@ -96,7 +96,8 @@ Integration externer Dienste (YouTube, Google Maps über iFrames)
 
 ## Entity-Relationship-Diagramm
 
-![ERD](src/main/resources/static/Entity-Relationship-Diagramm.svg)
+[![ERD](src/main/resources/static/Entity-Relationship-Diagramm.svg)](src/main/resources/static/Entity-Relationship-Diagramm.svg)
+
 
 ____________________________________________
 
@@ -122,5 +123,6 @@ Erweiterte Lagerbestandsüberwachung
 Automatisierte Mailbenachrichtigungen
 Dashboard mit Diagrammen und KPI-Analysen
 Volltextsuche in Artikeln und Kunden
+
 
 
