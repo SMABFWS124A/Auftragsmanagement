@@ -23,31 +23,50 @@ function showMessage(text, type) {
     }
 }
 async function exportArticlesToPDF() {
+    const exportButton = document.getElementById('pdfExportButton');
+    const fallbackLink = document.getElementById('pdfExportLink');
+    const downloadUrl = `${BASE_URL}/export/pdf`;
+
     try {
-        const response = await fetch(`${BASE_URL}/export/pdf`, {
+        if (exportButton) {
+            exportButton.disabled = true;
+            exportButton.classList.add('loading');
+        }
+
+        const response = await fetch(downloadUrl, {
+            method: 'GET',
             headers: {
                 'Accept': 'application/pdf'
             }
         });
 
-        if (!response.ok) {
+        if (!response.ok || !response.headers.get('Content-Type')?.includes('pdf')) {
             throw new Error(`Serverfehler: ${response.status} ${response.statusText}`);
         }
 
         const blob = await response.blob();
-        const downloadUrl = window.URL.createObjectURL(blob);
+        const objectUrl = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
-        link.href = downloadUrl;
+        link.href = objectUrl;
         link.download = 'artikel.pdf';
         document.body.appendChild(link);
         link.click();
         link.remove();
-        window.URL.revokeObjectURL(downloadUrl);
+        window.URL.revokeObjectURL(objectUrl);
 
         showMessage('✅ PDF-Export gestartet. Die Datei wird heruntergeladen.', 'success');
     } catch (error) {
+        if (fallbackLink) {
+            fallbackLink.href = downloadUrl;
+            fallbackLink.click();
+        }
         showMessage('❌ Fehler beim PDF-Export: ' + error.message, 'error');
         console.error('PDF Export-Fehler:', error);
+    } finally {
+        if (exportButton) {
+            exportButton.disabled = false;
+            exportButton.classList.remove('loading');
+        }
     }
 }
 
@@ -60,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
     createUpdateForm.addEventListener('submit', handleFormSubmit);
     cancelButton.addEventListener('click', resetForm);
 
-    const exportButton = document.getElementById('pdfExportButton');
+     const exportButton = document.getElementById('pdfExportButton');
         if (exportButton) {
             exportButton.addEventListener('click', exportArticlesToPDF);
         }
@@ -253,4 +272,5 @@ async function deleteArticle(id, name) {
         showMessage('❌ Fehler beim Löschen des Artikels: ' + error.message, 'error');
         console.error('Delete-Fehler:', error);
     }
+
 }

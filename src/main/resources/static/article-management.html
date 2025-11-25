@@ -116,7 +116,6 @@
           position: relative; /* Für absolute Positionierung des Buttons */
         }
 
-        /* Neu: Button in der oberen rechten Ecke */
         .page-header #pdfExportButton {
             position: absolute;
             top: 26px;
@@ -352,14 +351,26 @@
           box-shadow: 0 12px 25px rgba(124, 93, 255, 0.35);
         }
 
-        /* Neuer Grüner Button-Stil für PDF Export */
         #pdfExportButton {
-            background: linear-gradient(120deg, var(--success), var(--success-dark));
-            color: #fff;
-            box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
-            font-size: 0.9rem; /* Etwas kleiner für die Ecke */
-            padding: 10px 18px;
-        }
+        background: linear-gradient(120deg, var(--success), var(--success-dark));
+        color: #fff;
+        box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
+
+        padding: 10px 18px;
+        border-radius: 999px;
+
+        text-decoration: none;
+        display: inline-block;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+
+         transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+#pdfExportButton:hover {
+    transform: translateY(-2px);
+}
 
         #pdfExportButton:hover {
             transform: translateY(-2px);
@@ -502,7 +513,6 @@
             margin-right: 0;
           }
 
-          /* Auf kleineren Bildschirmen den PDF-Button an eine geeignetere Stelle verschieben */
           .page-header #pdfExportButton {
               position: static;
               margin-top: 16px;
@@ -561,9 +571,12 @@
     <div class="container">
         <section class="page-header">
             <!-- NEU: PDF Export Button an oberer, rechter Position -->
-            <button type="button" id="pdfExportButton">
+            <a id="pdfExportButton"
+               href="/api/articles/export/pdf"
+               download>
                 PDF Export
-            </button>
+            </a>
+
 
             <p class="eyebrow">Produkte & Lager</p>
             <h1>Artikel- und Bestandsverwaltung</h1>
@@ -627,9 +640,9 @@
                             <textarea id="description" rows="3"></textarea>
                         </p>
 
-                        <!-- ANPASSUNG: Checkbox als Toggle-Switch -->
                         <p>
-                            <label for="active" class="toggle-switch" style="display: flex; flex-direction: row; gap: 10px; margin-top: 10px;">
+                            <label for="active" class="toggle-switch"
+                                   style="display: flex; flex-direction: row; gap: 10px; margin-top: 10px;">
                                 <input type="checkbox" id="active" name="active" checked>
                                 <span class="toggle-slider"></span>
                                 <span class="label-text">Artikel ist aktiv</span>
@@ -644,7 +657,6 @@
             </div>
             <div class="right-panel">
                 <h2>Alle Artikel</h2>
-                <!-- NEU: Wrapper für horizontales Scrollen -->
                 <div class="table-wrapper">
                     <table id="articleTable">
                         <thead>
