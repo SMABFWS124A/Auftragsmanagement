@@ -3,9 +3,11 @@ package com.springboot.auftragsmanagement.entity;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.ArrayList;
+
 
 @Entity
-@Table(name = "orders")
+@Table(name = "customer_orders")
 public class Order {
 
     @Id
@@ -23,7 +25,7 @@ public class Order {
     private double totalAmount;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderItem> items;
+    private List<OrderItem> items = new ArrayList<>();
 
     public Order() {
         this.orderDate = LocalDateTime.now();
@@ -41,7 +43,17 @@ public class Order {
     public double getTotalAmount() { return totalAmount; }
     public void setTotalAmount(double totalAmount) { this.totalAmount = totalAmount; }
     public List<OrderItem> getItems() { return items; }
-    public void setItems(List<OrderItem> items) { this.items = items; }
+    public void setItems(List<OrderItem> items) {
+        this.items.clear();
+        if (items != null) {
+            items.forEach(this::addItem);
+        }
+    }
+
+    public void addItem(OrderItem item) {
+        items.add(item);
+        item.setOrder(this);
+    }
 
     public boolean isNull() {
         return false;

@@ -2,29 +2,25 @@ package com.springboot.auftragsmanagement.service.impl;
 
 import com.springboot.auftragsmanagement.dto.OrderDto;
 import com.springboot.auftragsmanagement.dto.OrderItemDto;
-import com.springboot.auftragsmanagement.dto.PurchaseOrderDto;
-import com.springboot.auftragsmanagement.dto.PurchaseOrderItemDto;
 import com.springboot.auftragsmanagement.entity.Article;
 import com.springboot.auftragsmanagement.entity.Order;
 import com.springboot.auftragsmanagement.entity.OrderItem;
 import com.springboot.auftragsmanagement.entity.User;
+import com.springboot.auftragsmanagement.event.OrderEventPublisher;
 import com.springboot.auftragsmanagement.exception.ResourceNotFoundException;
-import com.springboot.auftragsmanagement.exception.StockExceededException;
-import com.springboot.auftragsmanagement.factory.PurchaseOrderFactory;
-import com.springboot.auftragsmanagement.factory.PurchaseOrderItemFactory;
 import com.springboot.auftragsmanagement.repository.ArticleRepository;
 import com.springboot.auftragsmanagement.repository.OrderRepository;
 import com.springboot.auftragsmanagement.repository.UserRepository;
-import com.springboot.auftragsmanagement.service.ArticleService;
 import com.springboot.auftragsmanagement.service.OrderService;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import com.springboot.auftragsmanagement.strategy.OrderPricingStrategyResolver;
 import com.springboot.auftragsmanagement.service.workflow.OrderDeliveryWorkflow;
 import com.springboot.auftragsmanagement.service.workflow.OrderWorkflowTemplate;
 import com.springboot.auftragsmanagement.service.workflow.OrderWorkflowTemplateDependencies;
-import com.springboot.auftragsmanagement.event.OrderEventPublisher;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,13 +34,13 @@ public class OrderServiceImpl implements OrderService {
     private final OrderEventPublisher orderEventPublisher;
     private final OrderWorkflowTemplate orderDeliveryWorkflow;
 
-
     public OrderServiceImpl(
             OrderRepository orderRepository,
             UserRepository userRepository,
             ArticleRepository articleRepository,
             OrderPricingStrategyResolver orderPricingStrategyResolver,
             OrderEventPublisher orderEventPublisher) {
+
         this.orderRepository = orderRepository;
         this.userRepository = userRepository;
         this.articleRepository = articleRepository;
@@ -82,37 +78,52 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public OrderDto createOrder(OrderDto orderDto) {
+
+        // 1) Kunde laden (FK customer_id muss gültig sein)
         User customer = userRepository.findById(orderDto.customerId())
                 .orElseThrow(() -> new ResourceNotFoundException("Customer", "id", orderDto.customerId()));
 
+        // 2) Leeren Auftrag aufbauen (noch nicht speichern)
         Order order = new Order();
         order.setCustomer(customer);
         order.setStatus("NEU");
+        order.setOrderDate(LocalDateTime.now());
 
-        Order savedOrder = orderRepository.save(order);
+        // 3) OrderItems aufbauen und mit Order verknüpfen
+        List<OrderItem> items = new ArrayList<>();
 
-
-        List<OrderItem> items = orderDto.items().stream().map(itemDto -> {
+        for (OrderItemDto itemDto : orderDto.items()) {
             Article article = articleRepository.findById(itemDto.articleId())
                     .orElseThrow(() -> new ResourceNotFoundException("Article", "id", itemDto.articleId()));
 
             OrderItem item = new OrderItem();
-            item.setOrder(savedOrder);
             item.setArticle(article);
             item.setQuantity(itemDto.quantity());
-            item.setUnitPrice(itemDto.unitPrice());
 
-            return item;
-        }).toList();
+            // Falls du den Preis vom Frontend schickst:
+            // item.setUnitPrice(itemDto.unitPrice());
+            // oder sicherheitshalber vom Artikel übernehmen:
+            item.setUnitPrice(itemDto.unitPrice() != null
+                    ? itemDto.unitPrice()
+                    : article.getSalesPrice());
 
+            // Bidirektionale Verknüpfung – wichtig für order_id FK
+            order.addItem(item);      // sollte intern item.setOrder(this) machen
+            items.add(item);
+        }
 
-        savedOrder.setItems(items);
-        savedOrder.setTotalAmount(orderPricingStrategyResolver.calculateTotal(orderDto));
+        order.setItems(items);
 
-        Order persistedOrder = orderRepository.save(savedOrder);
-        orderEventPublisher.publishOrderCreated(persistedOrder);
+        // 4) Gesamtbetrag berechnen (basierend auf DTO oder Items)
+        order.setTotalAmount(orderPricingStrategyResolver.calculateTotal(orderDto));
 
-        return mapToDto(persistedOrder);
+        // 5) Einmal speichern (Order + Items via Cascade)
+        Order savedOrder = orderRepository.save(order);
+
+        // 6) Event nach erfolgreichem Speichern publishen
+        orderEventPublisher.publishOrderCreated(savedOrder);
+
+        return mapToDto(savedOrder);
     }
 
     @Override
@@ -126,8 +137,6 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public OrderDto deliverOrder(Long orderId) {
         Order savedOrder = orderDeliveryWorkflow.execute(orderId);
-
-
         return mapToDto(savedOrder);
     }
 
@@ -138,7 +147,8 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new ResourceNotFoundException("Order", "id", orderId));
 
         if (!"GELIEFERT".equals(order.getStatus())) {
-            throw new IllegalStateException("Der Auftrag mit ID " + orderId + " kann nur im Status 'GELIEFERT' gelöscht werden.");
+            throw new IllegalStateException(
+                    "Der Auftrag mit ID " + orderId + " kann nur im Status 'GELIEFERT' gelöscht werden.");
         }
 
         orderRepository.delete(order);
