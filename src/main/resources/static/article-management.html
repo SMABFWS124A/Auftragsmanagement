@@ -561,7 +561,7 @@
     <div class="container">
         <section class="page-header">
             <!-- NEU: PDF Export Button an oberer, rechter Position -->
-            <button type="button" id="pdfExportButton" onclick="exportArticlesToPDF()">
+            <button type="button" id="pdfExportButton">
                 PDF Export
             </button>
 
@@ -665,28 +665,6 @@
         </div>
     </div>
 </div>
-
-<script>
-    /**
-     * Simuliert den PDF-Export der Artikel.
-     * In einer echten Anwendung würde hier ein Fetch-Request an das Backend gesendet,
-     * das die PDF generiert und als Blob zum Download zurückgibt.
-     */
-    function exportArticlesToPDF() {
-        const messageElement = document.getElementById('message');
-
-        // Nachricht anzeigen
-        messageElement.className = 'success';
-        messageElement.textContent = 'PDF Export gestartet. Die Datei wird in Kürze (simuliert) heruntergeladen...';
-
-        // Statusmeldung nach 5 Sekunden zurücksetzen
-        setTimeout(() => {
-            messageElement.textContent = '';
-            messageElement.className = '';
-        }, 5000);
-    }
-</script>
-
 <script src="/article.js"></script>
 </body>
 </html>

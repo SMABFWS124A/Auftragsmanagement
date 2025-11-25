@@ -4,6 +4,8 @@ import com.springboot.auftragsmanagement.dto.ArticleDto;
 import com.springboot.auftragsmanagement.service.ArticleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import com.springboot.auftragsmanagement.service.PdfExportService;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,9 +15,11 @@ import java.util.List;
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final PdfExportService pdfExportService;
 
-    public ArticleController(ArticleService articleService) {
+    public ArticleController(ArticleService articleService, PdfExportService pdfExportService) {
         this.articleService = articleService;
+        this.pdfExportService = pdfExportService;
     }
 
     @PostMapping
@@ -70,5 +74,13 @@ public class ArticleController {
 
         ArticleDto updatedArticle = articleService.updateInventory(id, inventoryChange);
         return ResponseEntity.ok(updatedArticle);
+    }
+    @GetMapping(value = "/export/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<byte[]> exportArticlesToPdf() {
+        byte[] pdfContent = pdfExportService.exportArticlesToPdf();
+
+        return ResponseEntity.ok()
+                .header("Content-Disposition", "attachment; filename=artikel.pdf")
+                .body(pdfContent);
     }
 }

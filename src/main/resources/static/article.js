@@ -22,12 +22,48 @@ function showMessage(text, type) {
         }, 5000);
     }
 }
+async function exportArticlesToPDF() {
+    try {
+        const response = await fetch(`${BASE_URL}/export/pdf`, {
+            headers: {
+                'Accept': 'application/pdf'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`Serverfehler: ${response.status} ${response.statusText}`);
+        }
+
+        const blob = await response.blob();
+        const downloadUrl = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.download = 'artikel.pdf';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        window.URL.revokeObjectURL(downloadUrl);
+
+        showMessage('✅ PDF-Export gestartet. Die Datei wird heruntergeladen.', 'success');
+    } catch (error) {
+        showMessage('❌ Fehler beim PDF-Export: ' + error.message, 'error');
+        console.error('PDF Export-Fehler:', error);
+    }
+}
+
+// Sicherstellen, dass die Funktion auch bei Inline-Handlern verfügbar ist
+window.exportArticlesToPDF = exportArticlesToPDF;
 
 document.addEventListener('DOMContentLoaded', () => {
     populateCategoryDropdown();
     fetchAndDisplayArticles();
     createUpdateForm.addEventListener('submit', handleFormSubmit);
     cancelButton.addEventListener('click', resetForm);
+
+    const exportButton = document.getElementById('pdfExportButton');
+        if (exportButton) {
+            exportButton.addEventListener('click', exportArticlesToPDF);
+        }
 });
 
 function populateCategoryDropdown() {
