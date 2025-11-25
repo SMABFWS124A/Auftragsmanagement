@@ -94,6 +94,10 @@ JavaScript
 Grid-basiertes UI-Layout
 Integration externer Dienste (YouTube, Google Maps über iFrames)
 
+## Entity-Relationship-Diagramm
+
+![ERD](src/main/resources/static/Entity-Relationship-Diagramm.svg)
+
 ____________________________________________
 
 🔧 Installation & Setup
@@ -118,4 +122,5 @@ Erweiterte Lagerbestandsüberwachung
 Automatisierte Mailbenachrichtigungen
 Dashboard mit Diagrammen und KPI-Analysen
 Volltextsuche in Artikeln und Kunden
+
 
