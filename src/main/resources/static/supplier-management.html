@@ -390,6 +390,18 @@
             white-space: normal;
         }
 
+        /* Wrapper für horizontalen Scroll */
+        .table-wrapper {
+            overflow-x: auto; /* Erlaubt horizontales Scrollen */
+            margin-top: 18px; /* Abstand wie die Tabelle selbst */
+        }
+
+        /* Tabelle selbst aus dem rechten Panel nehmen, damit der Wrapper den Scrollen übernimmt */
+        #supplierTable {
+            margin-top: 0;
+        }
+
+
         @media (max-width: 1024px) {
             .main-content {
                 grid-template-columns: 1fr;
@@ -411,6 +423,7 @@
             }
         }
 
+        /* Die gestapelte Tabellenansicht wurde entfernt, um das Scrollen auf kleinen Bildschirmen zu ermöglichen */
         @media (max-width: 640px) {
             .page-shell {
                 padding: 20px 16px 36px;
@@ -421,57 +434,6 @@
                 grid-template-columns: 1fr;
                 flex-direction: column;
                 align-items: flex-start;
-            }
-
-            #userTable,
-            #articleTable,
-            #supplierTable,
-            #purchaseOrderTable,
-            #orderTable {
-                display: block;
-            }
-
-            #userTable thead,
-            #articleTable thead,
-            #supplierTable thead,
-            #purchaseOrderTable thead,
-            #orderTable thead {
-                display: none;
-            }
-
-            #userTable tr,
-            #articleTable tr,
-            #supplierTable tr,
-            #purchaseOrderTable tr,
-            #orderTable tr {
-                display: block;
-                margin-bottom: 16px;
-                border-bottom: none;
-            }
-
-            #userTable td,
-            #articleTable td,
-            #supplierTable td,
-            #purchaseOrderTable td,
-            #orderTable td {
-                display: flex;
-                justify-content: space-between;
-                text-align: right;
-                border-bottom: 1px solid rgba(148, 163, 184, 0.12);
-                white-space: normal;
-            }
-
-            #userTable td::before,
-            #articleTable td::before,
-            #supplierTable td::before,
-            #purchaseOrderTable td::before,
-            #orderTable td::before {
-                content: attr(data-label);
-                font-weight: 600;
-                text-transform: uppercase;
-                letter-spacing: 0.1em;
-                color: var(--text-muted);
-                text-align: left;
             }
         }
 
@@ -556,19 +518,21 @@
 
             <div class="right-panel">
                 <h2>Alle Lieferanten</h2>
-                <table id="supplierTable">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Ansprechpartner</th>
-                        <th>E-Mail</th>
-                        <th>Aktionen</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+                <div class="table-wrapper">
+                    <table id="supplierTable">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Ansprechpartner</th>
+                            <th>E-Mail</th>
+                            <th>Aktionen</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

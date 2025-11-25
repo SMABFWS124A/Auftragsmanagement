@@ -390,6 +390,18 @@
             white-space: normal;
         }
 
+        /* NEUE STYLES FÜR HORIZONTALES SCROLLEN */
+        .table-wrapper {
+            overflow-x: auto; /* Erlaubt horizontales Scrollen */
+            margin-top: 18px; /* Abstand wie die Tabelle selbst */
+        }
+
+        #userTable {
+            margin-top: 0; /* Setzt den ursprünglichen Abstand der Tabelle zurück, da er vom Wrapper übernommen wird */
+            min-width: 600px; /* Stellt sicher, dass die Tabelle breit genug ist, um den Scrollbalken zu erzeugen, falls die Inhalte zu lang sind */
+        }
+
+
         @media (max-width: 1024px) {
             .main-content {
                 grid-template-columns: 1fr;
@@ -423,12 +435,13 @@
                 align-items: flex-start;
             }
 
+            /* Enferne die gestapelte Ansicht, da wir jetzt horizontales Scrollen verwenden */
             #userTable,
             #articleTable,
             #supplierTable,
             #purchaseOrderTable,
             #orderTable {
-                display: block;
+                /* display: block; */ /* Entfernt */
             }
 
             #userTable thead,
@@ -436,43 +449,10 @@
             #supplierTable thead,
             #purchaseOrderTable thead,
             #orderTable thead {
-                display: none;
+                /* display: none; */ /* Entfernt */
             }
 
-            #userTable tr,
-            #articleTable tr,
-            #supplierTable tr,
-            #purchaseOrderTable tr,
-            #orderTable tr {
-                display: block;
-                margin-bottom: 16px;
-                border-bottom: none;
-            }
-
-            #userTable td,
-            #articleTable td,
-            #supplierTable td,
-            #purchaseOrderTable td,
-            #orderTable td {
-                display: flex;
-                justify-content: space-between;
-                text-align: right;
-                border-bottom: 1px solid rgba(148, 163, 184, 0.12);
-                white-space: normal;
-            }
-
-            #userTable td::before,
-            #articleTable td::before,
-            #supplierTable td::before,
-            #purchaseOrderTable td::before,
-            #orderTable td::before {
-                content: attr(data-label);
-                font-weight: 600;
-                text-transform: uppercase;
-                letter-spacing: 0.1em;
-                color: var(--text-muted);
-                text-align: left;
-            }
+            /* ... weitere gestapelte Tabellenstile entfernt oder ignoriert ... */
         }
 
     </style>
@@ -548,19 +528,22 @@
 
             <div class="right-panel">
                 <h2>Alle Kund*innen</h2>
-                <table id="userTable">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Vorname</th>
-                        <th>Nachname</th>
-                        <th>E-Mail</th>
-                        <th>Aktionen</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+                <!-- NEU: Wrapper für horizontales Scrollen -->
+                <div class="table-wrapper">
+                    <table id="userTable">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Vorname</th>
+                            <th>Nachname</th>
+                            <th>E-Mail</th>
+                            <th>Aktionen</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

@@ -337,6 +337,14 @@
           .quote {
             text-align: left;
           }
+          #typewriter {
+    display: inline-block;
+    border-right: 2px solid #fff;
+    padding-right: 6px;
+    white-space: nowrap;
+    width: fit-content;
+}
+
         }
     </style>
 </head>
@@ -352,9 +360,10 @@
                     Eingeloggt
                 </div>
                 <h1>
-                    Willkommen zurück!
+                    <span id="typewriter"></span> -
                     <span class="username" id="username-display">User</span>
                 </h1>
+
                 <p id="greeting-text">Schön, dass du da bist.</p>
             </div>
             <div class="time-block">
@@ -460,6 +469,35 @@
       "„Heute ist ein guter Tag, um 1% besser zu werden.“",
       "„Disziplin schlägt Motivation – aber beides zusammen ist unschlagbar.“"
     ];
+
+    // Schreibmaschinen-Animation
+const typewriterEl = document.getElementById("typewriter");
+const word = "Willkommen zurück!";
+let twIndex = 0;
+let deleting = false;
+
+function typewriter() {
+  if (!deleting) {
+    typewriterEl.textContent = word.substring(0, twIndex + 1);
+    twIndex++;
+
+    if (twIndex === word.length) {
+      setTimeout(() => deleting = true, 1000); // kleine Pause
+    }
+  } else {
+    typewriterEl.textContent = word.substring(0, twIndex - 1);
+    twIndex--;
+
+    if (twIndex === 0) {
+      deleting = false;
+    }
+  }
+
+  setTimeout(typewriter, deleting ? 75 : 120);
+}
+
+typewriter();
+
 
     function setUsername() {
       usernameDisplay.textContent = username;

@@ -20,6 +20,7 @@
           --primary: #7c5dff;
           --primary-dark: #5b3fe6;
           --success: #22c55e;
+          --success-dark: #15803d; /* Dunklere Farbe für den Hover-Effekt */
           --warning: #facc15;
           --danger: #fb7185;
           --shadow: 0 25px 45px rgba(2, 6, 23, 0.65);
@@ -109,6 +110,18 @@
           padding: 26px;
           box-shadow: var(--shadow);
           backdrop-filter: blur(20px);
+          /* Neu: Flex-Container für Layout */
+          display: flex;
+          flex-direction: column;
+          position: relative; /* Für absolute Positionierung des Buttons */
+        }
+
+        /* Neu: Button in der oberen rechten Ecke */
+        .page-header #pdfExportButton {
+            position: absolute;
+            top: 26px;
+            right: 26px;
+            z-index: 10;
         }
 
         .page-header .eyebrow {
@@ -263,6 +276,59 @@
           resize: vertical;
         }
 
+        /* Toggle Switch Styling */
+        .toggle-switch {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toggle-switch input[type="checkbox"] {
+            /* Das tatsächliche Checkbox-Input-Feld ausblenden */
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: relative;
+            cursor: pointer;
+            width: 44px;
+            height: 24px;
+            background-color: var(--text-muted);
+            border-radius: 34px;
+            transition: 0.4s;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: var(--card);
+            border-radius: 50%;
+            transition: 0.4s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Wenn Checkbox checked ist */
+        .toggle-switch input:checked + .toggle-slider {
+            background-color: var(--success);
+        }
+
+        .toggle-switch input:checked + .toggle-slider:before {
+            transform: translateX(20px);
+            background-color: #fff; /* Hellerer Punkt, wenn aktiv */
+        }
+
+        .toggle-switch .label-text {
+            color: var(--text);
+            font-weight: 500;
+        }
+
         button {
           border: none;
           border-radius: 999px;
@@ -277,6 +343,7 @@
           transform: translateY(-1px);
         }
 
+        /* Primärer Button-Stil (blau) */
         #submitButton,
         #submitOrderButton,
         #addItemButton {
@@ -284,6 +351,20 @@
           color: #fff;
           box-shadow: 0 12px 25px rgba(124, 93, 255, 0.35);
         }
+
+        /* Neuer Grüner Button-Stil für PDF Export */
+        #pdfExportButton {
+            background: linear-gradient(120deg, var(--success), var(--success-dark));
+            color: #fff;
+            box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
+            font-size: 0.9rem; /* Etwas kleiner für die Ecke */
+            padding: 10px 18px;
+        }
+
+        #pdfExportButton:hover {
+            transform: translateY(-2px);
+        }
+
 
         #cancelButton,
         button.delete-btn {
@@ -390,6 +471,17 @@
           white-space: normal;
         }
 
+        /* NEUE STYLES FÜR HORIZONTALES SCROLLEN */
+        .table-wrapper {
+            overflow-x: auto; /* Erlaubt horizontales Scrollen */
+            margin-top: 18px; /* Abstand wie die Tabelle selbst */
+        }
+
+        #articleTable {
+            margin-top: 0; /* Setzt den ursprünglichen Abstand der Tabelle zurück, da er vom Wrapper übernommen wird */
+            min-width: 700px; /* Stellt sicher, dass die Tabelle breit genug ist, um den Scrollbalken zu erzeugen */
+        }
+
         @media (max-width: 1024px) {
           .main-content {
             grid-template-columns: 1fr;
@@ -409,6 +501,13 @@
           .nav-links .brand {
             margin-right: 0;
           }
+
+          /* Auf kleineren Bildschirmen den PDF-Button an eine geeignetere Stelle verschieben */
+          .page-header #pdfExportButton {
+              position: static;
+              margin-top: 16px;
+              width: 100%;
+          }
         }
 
         @media (max-width: 640px) {
@@ -423,12 +522,13 @@
             align-items: flex-start;
           }
 
+          /* Entferne die gestapelte Ansicht für die Tabelle, da wir jetzt horizontales Scrollen verwenden */
           #userTable,
           #articleTable,
           #supplierTable,
           #purchaseOrderTable,
           #orderTable {
-            display: block;
+            /* display: block; */
           }
 
           #userTable thead,
@@ -436,43 +536,11 @@
           #supplierTable thead,
           #purchaseOrderTable thead,
           #orderTable thead {
-            display: none;
+            /* display: none; */
           }
 
-          #userTable tr,
-          #articleTable tr,
-          #supplierTable tr,
-          #purchaseOrderTable tr,
-          #orderTable tr {
-            display: block;
-            margin-bottom: 16px;
-            border-bottom: none;
-          }
+          /* ... und die zugehörigen td und tr overrides, um das Layout nicht zu stören ... */
 
-          #userTable td,
-          #articleTable td,
-          #supplierTable td,
-          #purchaseOrderTable td,
-          #orderTable td {
-            display: flex;
-            justify-content: space-between;
-            text-align: right;
-            border-bottom: 1px solid rgba(148, 163, 184, 0.12);
-            white-space: normal;
-          }
-
-          #userTable td::before,
-          #articleTable td::before,
-          #supplierTable td::before,
-          #purchaseOrderTable td::before,
-          #orderTable td::before {
-            content: attr(data-label);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--text-muted);
-            text-align: left;
-          }
         }
 
     </style>
@@ -492,12 +560,18 @@
     </header>
     <div class="container">
         <section class="page-header">
+            <!-- NEU: PDF Export Button an oberer, rechter Position -->
+            <button type="button" id="pdfExportButton" onclick="exportArticlesToPDF()">
+                PDF Export
+            </button>
+
             <p class="eyebrow">Produkte & Lager</p>
             <h1>Artikel- und Bestandsverwaltung</h1>
             <p>Organisiere dein Sortiment, Preise und Lagerbestände mit einem klaren, fokussierten Interface.</p>
             <div class="page-actions">
                 <span class="pill success">Aktiv</span>
                 <span class="pill neutral">Letztes Update vor Sekunden</span>
+                <!-- Alter Platz des Buttons wurde entfernt -->
             </div>
         </section>
         <div class="status-grid">
@@ -552,9 +626,14 @@
                             <label for="description">Beschreibung:</label>
                             <textarea id="description" rows="3"></textarea>
                         </p>
+
+                        <!-- ANPASSUNG: Checkbox als Toggle-Switch -->
                         <p>
-                            <input type="checkbox" id="active" name="active" checked>
-                            <label for="active" style="display: inline; font-weight: normal;">Artikel ist aktiv</label>
+                            <label for="active" class="toggle-switch" style="display: flex; flex-direction: row; gap: 10px; margin-top: 10px;">
+                                <input type="checkbox" id="active" name="active" checked>
+                                <span class="toggle-slider"></span>
+                                <span class="label-text">Artikel ist aktiv</span>
+                            </label>
                         </p>
 
                         <button type="submit" id="submitButton">Artikel speichern</button>
@@ -565,24 +644,49 @@
             </div>
             <div class="right-panel">
                 <h2>Alle Artikel</h2>
-                <table id="articleTable">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Art.Nr.</th>
-                        <th>Name</th>
-                        <th>VK-Preis</th>
-                        <th>Bestand</th>
-                        <th>Aktionen</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+                <!-- NEU: Wrapper für horizontales Scrollen -->
+                <div class="table-wrapper">
+                    <table id="articleTable">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Art.Nr.</th>
+                            <th>Name</th>
+                            <th>VK-Preis</th>
+                            <th>Bestand</th>
+                            <th>Aktionen</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    /**
+     * Simuliert den PDF-Export der Artikel.
+     * In einer echten Anwendung würde hier ein Fetch-Request an das Backend gesendet,
+     * das die PDF generiert und als Blob zum Download zurückgibt.
+     */
+    function exportArticlesToPDF() {
+        const messageElement = document.getElementById('message');
+
+        // Nachricht anzeigen
+        messageElement.className = 'success';
+        messageElement.textContent = 'PDF Export gestartet. Die Datei wird in Kürze (simuliert) heruntergeladen...';
+
+        // Statusmeldung nach 5 Sekunden zurücksetzen
+        setTimeout(() => {
+            messageElement.textContent = '';
+            messageElement.className = '';
+        }, 5000);
+    }
+</script>
+
 <script src="/article.js"></script>
 </body>
 </html>
