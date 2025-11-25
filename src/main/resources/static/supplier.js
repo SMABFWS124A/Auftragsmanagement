@@ -186,26 +186,134 @@ function showMessage(text, type) {
 
 function showSupplierDetails(supplier) {
     const detailsContent = `
-        <h3>Details für: ${supplier.name} (ID: ${supplier.id})</h3>
-        <hr>
-        <p><strong>Name der Firma:</strong> ${supplier.name}</p>
-        <p><strong>Ansprechpartner:</strong> ${supplier.contactPerson || 'N/A'}</p>
-        <p><strong>E-Mail:</strong> ${supplier.email}</p>
-        <p><strong>Telefon:</strong> ${supplier.phone || 'N/A'}</p>
-        <p><strong>Adresse:</strong> ${supplier.address || 'N/A'}</p>
+        <div class="popup-card">
+            <h2 class="popup-title">Lieferant: ${supplier.name} (ID: ${supplier.id})</h2>
+
+            <div class="popup-section">
+                <p><strong>Firma:</strong><span>${supplier.name}</span></p>
+                <p><strong>Ansprechpartner:</strong><span>${supplier.contactPerson || 'N/A'}</span></p>
+                <p><strong>E-Mail:</strong><span>${supplier.email}</span></p>
+                <p><strong>Telefon:</strong><span>${supplier.phone || 'N/A'}</span></p>
+                <p><strong>Adresse:</strong><span>${supplier.address || 'N/A'}</span></p>
+            </div>
+
+            <div class="popup-footer">
+                <button type="button" onclick="window.close()">Schließen</button>
+            </div>
+        </div>
     `;
 
-    const popup = window.open('', 'SupplierDetails', 'width=500,height=400,scrollbars=yes');
+    const popup = window.open('', 'SupplierDetails', 'width=520,height=480,scrollbars=no,resizable=no');
     popup.document.write(`
         <!DOCTYPE html>
         <html lang="de">
         <head>
             <title>Lieferantendetails</title>
             <style>
-                body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; line-height: 1.6; }
-                h3 { color: #007bff; border-bottom: 2px solid #007bff; padding-bottom: 10px; }
-                hr { border: none; border-top: 1px solid #ccc; margin: 15px 0; }
-                p strong { display: inline-block; width: 150px; }
+                :root {
+                  --bg-gradient: radial-gradient(circle at top, #4338ca 0%, #111827 45%, #020617 100%);
+                  --card: rgba(15, 23, 42, 0.96);
+                  --border: rgba(148, 163, 184, 0.25);
+                  --text: #e5e7eb;
+                  --text-muted: #94a3b8;
+                  --accent: #6366f1;
+                  --accent-soft: rgba(99, 102, 241, 0.2);
+                  --shadow: 0 24px 45px rgba(2, 6, 23, 0.85);
+                  --btn-bg: linear-gradient(120deg, #6366f1, #4f46e5);
+                }
+
+                * {
+                    box-sizing: border-box;
+                }
+
+                body {
+                    margin: 0;
+                    min-height: 100vh;
+                    padding: 24px;
+                    background: var(--bg-gradient);
+                    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+                    color: var(--text);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .popup-card {
+                    width: 100%;
+                    max-width: 460px;
+                    background: var(--card);
+                    border-radius: 26px;
+                    border: 1px solid var(--border);
+                    box-shadow: var(--shadow);
+                    padding: 22px 24px 18px;
+                    backdrop-filter: blur(18px);
+                }
+
+                .popup-title {
+                    margin: 0 0 18px 0;
+                    font-size: 1.35rem;
+                    font-weight: 600;
+                    color: #c7d2fe;
+                    letter-spacing: 0.03em;
+                    border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+                    padding-bottom: 10px;
+                }
+
+                .popup-section {
+                    border-radius: 20px;
+                    padding: 18px 18px 10px;
+                    background: radial-gradient(circle at top left, rgba(99,102,241,0.2), transparent 55%);
+                    border: 1px solid rgba(30,64,175,0.45);
+                }
+
+                .popup-section p {
+                    margin: 8px 0;
+                    display: flex;
+                    gap: 8px;
+                    font-size: 0.95rem;
+                }
+
+                .popup-section strong {
+                    flex: 0 0 130px;
+                    color: var(--text-muted);
+                    font-weight: 600;
+                }
+
+                .popup-section span {
+                    flex: 1;
+                    color: var(--text);
+                    font-weight: 500;
+                }
+
+                .popup-footer {
+                    margin-top: 16px;
+                    display: flex;
+                    justify-content: flex-end;
+                }
+
+                .popup-footer button {
+                    border: none;
+                    border-radius: 999px;
+                    padding: 8px 18px;
+                    font-size: 0.9rem;
+                    font-weight: 600;
+                    cursor: pointer;
+                    background: var(--btn-bg);
+                    color: #fff;
+                    box-shadow: 0 12px 24px rgba(79, 70, 229, 0.45);
+                    transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.15s ease;
+                }
+
+                .popup-footer button:hover {
+                    transform: translateY(-1px);
+                    box-shadow: 0 16px 30px rgba(79, 70, 229, 0.55);
+                }
+
+                .popup-footer button:active {
+                    transform: translateY(0);
+                    box-shadow: 0 8px 18px rgba(79, 70, 229, 0.4);
+                    opacity: 0.9;
+                }
             </style>
         </head>
         <body>
