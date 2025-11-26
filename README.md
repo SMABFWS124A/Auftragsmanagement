@@ -1,31 +1,23 @@
 ## Auftragsmanagement-System "Auftragscockpit"
 ![Logo](src/main/resources/static/logo.png)
 
-____________________________________________
-
-📦 Auftragsmanagement-System
+## 📦 Auftragsmanagement-System
 
 Ein modular aufgebautes, webbasiertes Verwaltungssystem für Kunden, Artikel, Lieferanten, Bestellungen und Kundenaufträge.
 Das Projekt dient als zentrale Plattform, um betriebliche Bestell- und Auftragsprozesse digital, transparent und effizient abzubilden.
 
-____________________________________________
-
-🚀 Funktionsübersicht
+## 🚀 Funktionsübersicht
 
 Das System stellt eine Vielzahl an Kernfunktionen bereit, die typische Unternehmensprozesse abdecken.
 
-____________________________________________
-
-👥 Kundenverwaltung
+## 👥 Kundenverwaltung
 
 - Kunden anlegen (Vorname, Nachname, E-Mail)
 - Kunden bearbeiten (Vorname, Nachname, E-Mail)
 - Kunden löschen
 - Übersicht aller Kunden in tabellarischer Darstellung
 
-____________________________________________
-
-📦 Artikelverwaltung
+## 📦 Artikelverwaltung
 
 - Artikel erstellen (Aritkelnummer, Name, EK, VK, Kategorie, Lagerbestand, Beschreibung, Ist Artikel aktiv?)
 - Artikel bearbeiten
@@ -34,9 +26,7 @@ ____________________________________________
 - Prüfung von Lagerbeständen
 - Export der Artikelübersicht als PDF
 
-____________________________________________
-
-🏭 Lieferantenverwaltung
+## 🏭 Lieferantenverwaltung
 
 - Lieferanten anlegen (Firmenname, Ansprechpartner, E-Mail, Telefon, Addresse)
 - Lieferanten bearbeiten
@@ -44,18 +34,14 @@ ____________________________________________
 - Detaillierte Anzeige aller Informationen zu einem Lieferanten ("Details")
 - Verwaltung von Kontaktdaten und Stammdaten
 
-____________________________________________
-
-🛒 Bestellwesen (Beschaffungsprozesse)
+## 🛒 Bestellwesen (Beschaffungsprozesse)
 
 - Erfassen von Bestellpositionen
 - Erstellen und Absenden von Bestellungen
 - Validierungslogiken (Mindestmenge, Lagerbestand, doppelte Artikel)
 - Automatische Bestellnummernvergabe
 
-____________________________________________
-
-📑 Kundenaufträge
+## 📑 Kundenaufträge
 
 - Kundenaufträge erstellen und verwalten
 - Validierung der Bestellpositionen (Auswahl mind. 1 oder mehrere)
@@ -63,51 +49,42 @@ ____________________________________________
 - Automatische Lagerbestandsanpassung bei Auslieferung
 - Ereignisbasierte Verarbeitung (Logging, Bestandsänderung)
 
-____________________________________________
+## 🎯 Zielsetzung
 
-🎯 Ziel des Projekts
+Das Auftragsmanagement-System wurde entwickelt, um eine stabile, wartbare und langfristig erweiterbare Plattform für betriebliche Prozesse zu schaffen.  
+Im Fokus stehen:
 
-Das Auftragsmanagement-System ist so konzipiert, dass es eine moderne und robuste Basis für Geschäftsprozesse bildet.
-Es ermöglicht:
+- **Hohe Datenqualität** durch strukturierte, konsistente und valide Datenhaltung  
+- **Prozesssicherheit** durch klar definierte und nachvollziehbare Abläufe  
+- **Benutzerfreundlichkeit** dank einer schlanken, performanten Weboberfläche  
+- **Skalierbarkeit** für zukünftige Funktionsbereiche (z. B. Logistik, Reporting, Rollen- und Rechteverwaltung)  
+- **Nachhaltige Softwarearchitektur** durch modularen Aufbau und Wiederverwendbarkeit einzelner Komponenten  
 
-- strukturierte und konsistente Datenhaltung
-- klare, nachvollziehbare Prozesslogik
-- intuitive Bedienbarkeit durch eine leichtgewichtige Web-Oberfläche
-- leichte Erweiterbarkeit für neue Geschäftsbereiche (z. B. Lagerlogistik, Reporting, Rollenverwaltung)
-- modulare, wiederverwendbare Architekturkomponenten
-
-____________________________________________
-
-Entity-Relationship-Diagramm
+## Entity-Relationship-Diagramm
 
 [![ERD](src/main/resources/static/Entity-Relationship-Diagramm.svg)](src/main/resources/static/Entity-Relationship-Diagramm.svg)
-____________________________________________
 
-🛠️ Technologie-Stack
+## 🛠️ Technologie-Stack
 
-Backend:
+| **Rolle / Bereich** | **Technologie** | **Version / Typ** | **Hinweis** |
+| :--- | :--- | :--- | :--- |
+| **Backend** | Java | 17 | Zentrale Programmiersprache des Backends. |
+| **Backend** | Spring Boot | REST-API, DI/IoC, JPA | Grundlage für API, Dependency Injection und Persistenz. |
+| **Backend** | Spring Data JPA | – | Vereinfachte Datenbankabstraktion für JPA. |
+| **Backend** | OpenPDF | – | Generierung von PDF-Dokumenten im Server. |
+| **Frontend** | HTML | 5 | Strukturierung der Weboberfläche. |
+| **Frontend** | CSS | 3 | Gestaltung und Styling des UI. |
+| **Frontend** | JavaScript | – | Interaktivität und dynamische Inhalte. |
+| **Frontend** | Grid-basiertes UI-Layout | – | Layout-Strukturierung für responsives Design. |
+| **Frontend** | Integration externer Dienste | YouTube, Google Maps via iFrame | Einbindung externer Inhalte. |
 
-- Java 17
-- Spring Boot (REST-API, DI/IoC, JPA)
-- Spring Data JPA
-- OpenPDF für PDF-Generierung
 
-Frontend:
-
-- HTML5
-- CSS3
-- JavaScript
-- Grid-basiertes UI-Layout
-- Integration externer Dienste (YouTube, Google Maps über iFrames)
-
-____________________________________________
-
-🔧 Installation & Setup
+## 🔧 Installation & Setup
 
 Repository klonen:
-
+```bash
 git clone https://github.com/SMABFWS124A/Auftragsmanagement
-
+```
 
 Mit einer IDE der Wahl (IntelliJ, Eclipse, VS Code) öffnen, Maven Dependencies laden, Spring Boot Anwendung starten
 => Browser öffnen und die Schnittstellen bzw. HTML-Oberfläche aufrufen über: http://localhost:8080/login.html
@@ -118,9 +95,7 @@ Anmeldedaten:
 | :--- | :--- | :--- | :--- | 
 | **Testbenutzer** | `test@test.de` | `Test123` | Vollständiger Zugriff auf alle Verwaltungsbereiche  für Testzwecke. | 
 
-____________________________________________
-
-📅 Geplante Erweiterungen
+## 📅 Geplante Erweiterungen
 
 - Rollen- und Rechtemanagement (RBAC)
 - Erweiterte Lagerbestandsüberwachung
@@ -132,6 +107,7 @@ ____________________________________________
 ____________________________________________
 
 Viel Spaß beim Benutzen und Testen der Anwendung!
+
 
 
 
