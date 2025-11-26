@@ -1,4 +1,4 @@
-🧾 Auftragsmanagement-System "Auftragscockpit"
+## Auftragsmanagement-System "Auftragscockpit"
 ![Logo](src/main/resources/static/logo.png)
 
 ____________________________________________
@@ -18,49 +18,50 @@ ____________________________________________
 
 👥 Kundenverwaltung
 
-Kunden anlegen
-Kunden bearbeiten
-Kunden löschen
-Übersicht aller Kunden in tabellarischer Darstellung
+- Kunden anlegen (Vorname, Nachname, E-Mail)
+- Kunden bearbeiten (Vorname, Nachname, E-Mail)
+- Kunden löschen
+- Übersicht aller Kunden in tabellarischer Darstellung
 
 ____________________________________________
 
 📦 Artikelverwaltung
 
-Artikel erstellen
-Artikel bearbeiten
-Artikel löschen
-Automatische Margenberechnung (Deckungsbeiträge)
-Prüfung von Lagerbeständen
-Export der Artikelübersicht als PDF
+- Artikel erstellen (Aritkelnummer, Name, EK, VK, Kategorie, Lagerbestand, Beschreibung, Ist Artikel aktiv?)
+- Artikel bearbeiten
+- Artikel löschen
+- Automatische Margenberechnung (Deckungsbeiträge)
+- Prüfung von Lagerbeständen
+- Export der Artikelübersicht als PDF
 
 ____________________________________________
 
 🏭 Lieferantenverwaltung
 
-Lieferanten anlegen
-Lieferanten bearbeiten
-Lieferanten löschen
-Verwaltung von Kontaktdaten und Stammdaten
+- Lieferanten anlegen (Firmenname, Ansprechpartner, E-Mail, Telefon, Addresse)
+- Lieferanten bearbeiten
+- Lieferanten löschen
+- Detaillierte Anzeige aller Informationen zu einem Lieferanten ("Details")
+- Verwaltung von Kontaktdaten und Stammdaten
 
 ____________________________________________
 
 🛒 Bestellwesen (Beschaffungsprozesse)
 
-Erfassen von Bestellpositionen
-Erstellen und Absenden von Bestellungen
-Validierungslogiken (Mindestmenge, Lagerbestand, doppelte Artikel)
-Automatische Bestellnummernvergabe
+- Erfassen von Bestellpositionen
+- Erstellen und Absenden von Bestellungen
+- Validierungslogiken (Mindestmenge, Lagerbestand, doppelte Artikel)
+- Automatische Bestellnummernvergabe
 
 ____________________________________________
 
 📑 Kundenaufträge
 
-Kundenaufträge erstellen und verwalten
-Validierung der Bestellpositionen
-Festlegung des Auftragsstatus (NEU → AUSGELIEFERT)
-Automatische Lagerbestandsanpassung bei Auslieferung
-Ereignisbasierte Verarbeitung (Logging, Bestandsänderung)
+- Kundenaufträge erstellen und verwalten
+- Validierung der Bestellpositionen (Auswahl mind. 1 oder mehrere)
+- Festlegung des Auftragsstatus (NEU → AUSGELIEFERT)
+- Automatische Lagerbestandsanpassung bei Auslieferung
+- Ereignisbasierte Verarbeitung (Logging, Bestandsänderung)
 
 ____________________________________________
 
@@ -77,27 +78,27 @@ Es ermöglicht:
 
 ____________________________________________
 
+Entity-Relationship-Diagramm
+
+[![ERD](src/main/resources/static/Entity-Relationship-Diagramm.svg)](src/main/resources/static/Entity-Relationship-Diagramm.svg)
+____________________________________________
+
 🛠️ Technologie-Stack
 
 Backend:
 
-Java 17
-Spring Boot (REST-API, DI/IoC, JPA)
-Spring Data JPA
-OpenPDF für PDF-Generierung
+- Java 17
+- Spring Boot (REST-API, DI/IoC, JPA)
+- Spring Data JPA
+- OpenPDF für PDF-Generierung
 
 Frontend:
 
-HTML5
-CSS3
-JavaScript
-Grid-basiertes UI-Layout
-Integration externer Dienste (YouTube, Google Maps über iFrames)
-
-## Entity-Relationship-Diagramm
-
-[![ERD](src/main/resources/static/Entity-Relationship-Diagramm.svg)](src/main/resources/static/Entity-Relationship-Diagramm.svg)
-
+- HTML5
+- CSS3
+- JavaScript
+- Grid-basiertes UI-Layout
+- Integration externer Dienste (YouTube, Google Maps über iFrames)
 
 ____________________________________________
 
@@ -108,21 +109,30 @@ Repository klonen:
 git clone https://github.com/SMABFWS124A/Auftragsmanagement
 
 
-Mit einer IDE der Wahl (IntelliJ, Eclipse, VS Code) öffnen
-Maven Dependencies laden
-Spring Boot Anwendung starten
-Browser öffnen und die Schnittstellen bzw. HTML-Oberfläche aufrufen
+Mit einer IDE der Wahl (IntelliJ, Eclipse, VS Code) öffnen, Maven Dependencies laden, Spring Boot Anwendung starten
+=> Browser öffnen und die Schnittstellen bzw. HTML-Oberfläche aufrufen über: http://localhost:8080/login.html
+
+Anmeldedaten:
+
+| Rolle | Benutzername / E-Mail | Passwort | Hinweis | 
+| :--- | :--- | :--- | :--- | 
+| **Testbenutzer** | `test@test.de` | `Test123` | Vollständiger Zugriff auf alle Verwaltungsbereiche  für Testzwecke. | 
 
 ____________________________________________
 
 📅 Geplante Erweiterungen
 
-Rollen- und Rechtemanagement (RBAC)
-Erweiterte Lagerbestandsüberwachung
-(Weitere) Exportfunktionen (PDF, CSV, Excel)
-Automatisierte Mailbenachrichtigungen
-Dashboard mit Diagrammen und KPI-Analysen
-Volltextsuche in Artikeln und Kunden
+- Rollen- und Rechtemanagement (RBAC)
+- Erweiterte Lagerbestandsüberwachung
+- Automatisierte Mailbenachrichtigungen
+- Dashboard mit Diagrammen und KPI-Analysen
+- Volltextsuche in Artikeln und Kunden
+- (Weitere) Exportfunktionen (PDF, CSV, Excel)
+
+____________________________________________
+
+Viel Spaß beim Benutzen und Testen der Anwendung!
+
 
 
 
