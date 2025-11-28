@@ -110,10 +110,11 @@ Anmeldedaten:
 ## Architektur-, Muster- und Integrationsdokumentation
 Eine detaillierte Beschreibung der Architektur des Auftragscockpits finden Sie hier:
 
-[Architektur - Auftragscockpit (PDF)](https://github.com/SMABFWS124A/Auftragsmanagement/blob/main/Auftragsmanagement/src/main/resources/static/Architektur%20-%20Auftragscockpit.pdf)
+[Architektur - Auftragscockpit (PDF)](https://github.com/SMABFWS124A/Auftragsmanagement/blob/main/src/main/resources/static/Architektur%20-%20Auftragscockpit.pdf)
 ____________________________________________
 
 Viel Spaß beim Benutzen und Testen der Anwendung!
+
 
 
 
