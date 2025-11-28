@@ -104,9 +104,17 @@ Anmeldedaten:
 - Volltextsuche in Artikeln und Kunden
 - (Weitere) Exportfunktionen (PDF, CSV, Excel)
 
+## Use Cases:
+[Use Cases - Auftragscockpit (PDF)](https://github.com/SMABFWS124A/Auftragsmanagement/blob/main/src/main/resources/static/Use%20Cases%20-%20Auftragscockpit.pdf)
+
+## Architektur-, Muster- und Integrationsdokumentation
+
 ____________________________________________
 
 Viel Spaß beim Benutzen und Testen der Anwendung!
+
+
+
 
 
 
